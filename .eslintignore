@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+coverage/
+public/
+docs/
+*.min.js
+*.bundle.js
+*.map
+*.log
+*.tmp
+*.cache
