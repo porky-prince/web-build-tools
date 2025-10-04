@@ -9,21 +9,25 @@
 .*.s[a-z][a-z]
 
 # OS
-.DS_Store
-Thumbs.db
+**/.DS_Store
+**/Thumbs.db
 
 # Node
-node_modules
+**/node_modules
 
 # log
-logs
-*.log
+**/logs
+**/*.log
 
 # npm-debug log
-npm-debug.*
+**/npm-debug.*
 
 # Jest Coverage
-coverage
+**/coverage
 
 # eslint
-.eslintcache
+**/.eslintcache
+
+# dest
+**/dist
+**/build
