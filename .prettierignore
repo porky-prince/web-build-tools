@@ -1,8 +1,11 @@
+**/.gitee
+**/.github
+**/.idea
+**/.vscode
 **/node_modules
 **/dist
 **/build
 **/coverage
-**/*.min.js
 **/CHANGELOG.md
-.gitee
-.github
+**/*.min.js
+**/*.bundle.js
