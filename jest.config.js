@@ -1,4 +1,4 @@
 module.exports = {
-  testEnvironment: "node",
-  collectCoverageFrom: ["**/src/**/*.{ts,js}"],
+  testEnvironment: 'node',
+  collectCoverageFrom: ['**/src/**/*.{js,ts}'],
 };
