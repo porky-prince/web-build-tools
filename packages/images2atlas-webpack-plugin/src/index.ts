@@ -2,10 +2,8 @@ import { FSWatcher, watch } from 'chokidar';
 import path from 'path';
 import webpack from 'webpack';
 import fs from 'fs-extra';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import templater from 'spritesheet-templates';
-import SpriteSmith from 'spritesmith';
+import Spritesmith from 'spritesmith';
 import debounce from 'debounce';
 
 type Plugin = webpack.WebpackPluginInstance;
@@ -38,7 +36,12 @@ export interface Images2atlasOptions {
   suffix?: string;
   delay?: number;
   silent?: boolean;
+  spritesmithOptions?: Spritesmith.SpritesmithParams &
+    Spritesmith.SpritesmithProcessImagesOptions;
+  templatesOptions?: Parameters<typeof templater>[1];
 }
+
+const formatTypes = ['css', 'json', 'less', 'sass', 'scss', 'styl'];
 
 export default class Images2atlasWebpackPlugin implements Plugin {
   private _options: Required<Images2atlasOptions>;
@@ -63,6 +66,14 @@ export default class Images2atlasWebpackPlugin implements Plugin {
       suffix: '-atlas',
       delay: 500,
       silent: true,
+      spritesmithOptions: {
+        padding: 2,
+        exportOpts: {
+          format: 'png',
+          quality: 100,
+        },
+      },
+      templatesOptions: {},
       ...options,
     };
   }
@@ -152,16 +163,13 @@ export default class Images2atlasWebpackPlugin implements Plugin {
     if (pngPaths.length === 0) {
       return;
     }
-    const { cwd, suffix } = this._options;
+    const { cwd, suffix, spritesmithOptions, templatesOptions } = this._options;
+    const format = templatesOptions.format || '';
     await new Promise<void>((resolve, reject) => {
-      SpriteSmith.run(
+      Spritesmith.run(
         {
+          ...spritesmithOptions,
           src: pngPaths,
-          padding: 2,
-          exportOpts: {
-            format: 'png',
-            quality: 100,
-          },
         },
         async (err, result) => {
           if (err) {
@@ -184,12 +192,12 @@ export default class Images2atlasWebpackPlugin implements Plugin {
               sprites,
               spritesheet,
             },
-            {
-              format: 'json_texture',
-            }
+            templatesOptions
           );
+          const ext =
+            formatTypes.find((type) => format.startsWith(type)) || 'txt';
           await Promise.all([
-            fs.outputFile(dest + suffix + '.json', temp),
+            fs.outputFile(dest + suffix + '.' + ext, temp),
             fs.outputFile(dest + suffix + '.png', result.image),
           ]);
           resolve();

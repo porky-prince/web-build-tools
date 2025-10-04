@@ -1,7 +1,7 @@
 {
   "name": "images2atlas-webpack-plugin",
   "version": "0.0.1",
-  "description": "Webpack plugin that converts set of images into a spritesheet and SASS/LESS/Stylus mixins",
+  "description": "Webpack plugin that converts set of images into a spritesheet by its directory and SASS/LESS/Stylus mixins",
   "author": "Porky Ke",
   "homepage": "https://github.com/porky-prince/web-build-tools/packages/images2atlas-webpack-plugin#readme",
   "bugs": "https://github.com/porky-prince/web-build-tools/issues",
@@ -43,6 +43,7 @@
   },
   "keywords": [
     "icons",
+    "images",
     "sprites",
     "spritesmith",
     "webpack"
