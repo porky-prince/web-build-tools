@@ -1,34 +1,16 @@
-import { defineConfig } from 'eslint/config';
+const { defineConfig } = require('eslint/config');
+const eslint = require('@eslint/js');
+const tseslint = require('typescript-eslint');
+const eslintPluginPrettierRecommended = require('eslint-plugin-prettier/recommended');
 
-export default defineConfig([
+module.exports = defineConfig([
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  eslintPluginPrettierRecommended,
   {
-    extends: ['xo', 'prettier'],
-    env: {
-      node: true,
-      es6: true,
-      jest: true,
-    },
-    plugins: ['prettier'],
-    parserOptions: {
-      ecmaVersion: 2020,
-      sourceType: 'module',
-    },
     rules: {
-      'no-multi-assign': 'off',
-      'no-unused-expressions': [
-        'error',
-        { allowShortCircuit: true, allowTernary: true },
-      ],
-      'max-params': 'off',
-      'no-await-in-loop': 'off',
-      'prefer-const': [
-        'error',
-        {
-          destructuring: 'all',
-          ignoreReadBeforeAssign: true,
-        },
-      ],
-      'capitalized-comments': 'off',
+      'no-undef': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
     },
     ignores: [
       '**/node_modules',
