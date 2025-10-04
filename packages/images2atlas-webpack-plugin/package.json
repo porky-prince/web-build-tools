@@ -24,7 +24,7 @@
     "start": "tsc -w",
     "tsc": "tsc --declaration",
     "build": "del dist && npm run tsc",
-    "test": "node test/index.test.js"
+    "test": "jest"
   },
   "dependencies": {
     "chokidar": "^4.0.3",

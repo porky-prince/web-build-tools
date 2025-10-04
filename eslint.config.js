@@ -12,6 +12,8 @@ module.exports = defineConfig([
       'no-undef': 'off',
       '@typescript-eslint/no-require-imports': 'off',
     },
+  },
+  {
     ignores: [
       '**/node_modules',
       '**/dist',

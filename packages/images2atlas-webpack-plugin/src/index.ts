@@ -2,6 +2,7 @@ import { FSWatcher, watch } from 'chokidar';
 import path from 'path';
 import webpack from 'webpack';
 import fs from 'fs-extra';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import templater from 'spritesheet-templates';
 import SpriteSmith from 'spritesmith';
@@ -70,7 +71,7 @@ export default class Images2atlasWebpackPlugin implements Plugin {
     return this.constructor.name;
   }
 
-  private log(...args: any[]): void {
+  private log(...args: string[]): void {
     if (!this._logger || this._options.silent) {
       return;
     }
