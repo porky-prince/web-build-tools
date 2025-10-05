@@ -71,6 +71,9 @@ importers:
       spritesmith:
         specifier: ^3.5.1
         version: 3.5.1
+      web-build-utils:
+        specifier: workspace:^
+        version: link:../web-build-utils
     devDependencies:
       '@types/fs-extra':
         specifier: ^11.0.4
@@ -81,6 +84,28 @@ importers:
       '@types/spritesmith':
         specifier: ^3.4.5
         version: 3.4.5
+      '@types/webpack':
+        specifier: ^5.28.5
+        version: 5.28.5
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
+      webpack:
+        specifier: ^5.102.0
+        version: 5.102.0
+
+  packages/web-build-utils:
+    dependencies:
+      fs-extra:
+        specifier: ^11.3.2
+        version: 11.3.2
+    devDependencies:
+      '@types/fs-extra':
+        specifier: ^11.0.4
+        version: 11.0.4
+      '@types/node':
+        specifier: ^24.6.2
+        version: 24.6.2
       '@types/webpack':
         specifier: ^5.28.5
         version: 5.28.5

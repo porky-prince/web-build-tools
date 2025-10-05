@@ -1,6 +1,6 @@
 declare module 'spritesheet-templates' {
   interface Options {
-    spritesheetName?: string;
+    // spritesheetName?: string;
     format?: string;
     formatOpts?: Record<string, any>;
   }

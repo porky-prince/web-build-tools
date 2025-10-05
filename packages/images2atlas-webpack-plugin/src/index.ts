@@ -5,27 +5,12 @@ import fs from 'fs-extra';
 import templater from 'spritesheet-templates';
 import Spritesmith from 'spritesmith';
 import debounce from 'debounce';
+import { isSafeFilename } from 'web-build-utils';
 
 type Plugin = webpack.WebpackPluginInstance;
 type Compiler = webpack.Compiler;
 // type Compilation = webpack.Compilation;
 type Logger = ReturnType<Compiler['getInfrastructureLogger']>;
-
-function isSafeFilename(p: string) {
-  if (!p) {
-    return false;
-  }
-  const name = path.basename(p);
-  // Exclude like .DS_Store etc.
-  if (name.startsWith('.')) {
-    return false;
-  }
-  if (/^[\w.\-@$]+$/.test(name)) {
-    return true;
-  }
-  console.warn('Found a unsafe file:', p);
-  return false;
-}
 
 export interface Images2atlasOptions {
   cwd?: string;
@@ -117,7 +102,7 @@ export default class Images2atlasWebpackPlugin implements Plugin {
       }
       once = true;
       this.getWatcher((e, p) => {
-        if (!isSafeFilename(p)) {
+        if (!isSafeFilename(p, true)) {
           return;
         }
         this.log(e, p);
@@ -136,7 +121,7 @@ export default class Images2atlasWebpackPlugin implements Plugin {
       fullNames.map(async (fullName) => {
         const srcPath = path.join(src, fullName);
         const info = path.parse(srcPath);
-        if (!isSafeFilename(srcPath) || exclude(info, srcPath)) {
+        if (!isSafeFilename(srcPath, true) || exclude(info, srcPath)) {
           return;
         }
         const destPath = path.join(dest, info.base);
