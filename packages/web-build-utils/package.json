@@ -1,0 +1,43 @@
+{
+  "name": "web-build-utils",
+  "version": "0.0.1",
+  "description": "The utils for web build tools",
+  "author": "Porky Ke",
+  "homepage": "https://github.com/porky-prince/web-build-tools/packages/web-build-utils#readme",
+  "bugs": "https://github.com/porky-prince/web-build-tools/issues",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:porky-prince/web-build-tools.git",
+    "directory": "packages/web-build-utils"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "tsc": "tsc --declaration",
+    "build": "del dist && npm run tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.2"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.6.2",
+    "@types/webpack": "^5.28.5",
+    "typescript": "^5.9.3",
+    "webpack": "^5.102.0"
+  },
+  "keywords": [
+    "build",
+    "utils"
+  ]
+}

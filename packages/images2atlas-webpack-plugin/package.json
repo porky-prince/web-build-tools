@@ -1,0 +1,52 @@
+{
+  "name": "images2atlas-webpack-plugin",
+  "version": "0.0.1",
+  "description": "Webpack plugin that converts set of images into a spritesheet by its directory and SASS/LESS/Stylus mixins",
+  "author": "Porky Ke",
+  "homepage": "https://github.com/porky-prince/web-build-tools/packages/images2atlas-webpack-plugin#readme",
+  "bugs": "https://github.com/porky-prince/web-build-tools/issues",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:porky-prince/web-build-tools.git",
+    "directory": "packages/images2atlas-webpack-plugin"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "tsc": "tsc --declaration",
+    "build": "del dist && npm run tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3",
+    "debounce": "^2.2.0",
+    "fs-extra": "^11.3.2",
+    "spritesheet-templates": "^10.5.2",
+    "spritesmith": "^3.5.1",
+    "web-build-utils": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.6.2",
+    "@types/spritesmith": "^3.4.5",
+    "@types/webpack": "^5.28.5",
+    "typescript": "^5.9.3",
+    "webpack": "^5.102.0"
+  },
+  "keywords": [
+    "icons",
+    "images",
+    "sprites",
+    "spritesmith",
+    "webpack"
+  ]
+}
