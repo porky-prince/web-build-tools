@@ -1,6 +1,11 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
-  "changelog": ["@changesets/changelog-github", { "repo": "porky-prince/web-build-tools" }],
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "porky-prince/web-build-tools"
+    }
+  ],
   "commit": false,
   "fixed": [],
   "linked": [],
