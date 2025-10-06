@@ -85,3 +85,8 @@ jobs:
         run: pnpm run pub:release
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Push tags
+        run: git push --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
