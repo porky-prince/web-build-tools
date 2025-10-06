@@ -1,5 +1,11 @@
 # images2style-webpack-plugin
 
+## 0.0.2
+
+### Patch Changes
+
+- [#15](https://github.com/porky-prince/web-build-tools/pull/15) [`9cf4d46`](https://github.com/porky-prince/web-build-tools/commit/9cf4d46edf7f63d6ead445f1b1c4ffb6fcfb349f) Thanks [@porky-prince](https://github.com/porky-prince)! - feat: add peerDependencies for webpack and update publish workflow to push tags
+
 ## 0.0.1
 
 ### Patch Changes
