@@ -90,9 +90,6 @@ importers:
       '@types/spritesmith':
         specifier: ^3.4.5
         version: 3.4.5
-      '@types/webpack':
-        specifier: ^5.28.5
-        version: 5.28.5
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -121,9 +118,6 @@ importers:
       '@types/node':
         specifier: ^24.6.2
         version: 24.6.2
-      '@types/webpack':
-        specifier: ^5.28.5
-        version: 5.28.5
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
