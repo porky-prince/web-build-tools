@@ -1,0 +1,30 @@
+name: 🧪 Check for Missing Changesets
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find changed files
+        id: diff
+        run: |
+          git fetch origin main
+          git diff --name-only origin/main...HEAD > changed_files.txt
+          cat changed_files.txt
+
+      - name: Validate changeset presence
+        run: |
+          if grep -q "^packages/" changed_files.txt && ! grep -q "^.changeset/" changed_files.txt; then
+            echo "::error::You modified a package but did not add a changeset file. Please run \`npx changeset\` and commit!"
+            exit 1
+          else
+            echo "✅ Changeset check passed"
+          fi
