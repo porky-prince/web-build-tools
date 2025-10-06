@@ -1,6 +1,6 @@
 import { FSWatcher, watch } from 'chokidar';
 import path from 'path';
-import webpack from 'webpack';
+import type webpack from 'webpack';
 import fs from 'fs-extra';
 import templater from 'spritesheet-templates';
 import Spritesmith from 'spritesmith';
