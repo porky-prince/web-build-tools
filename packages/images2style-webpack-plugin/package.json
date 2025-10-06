@@ -1,6 +1,6 @@
 {
   "name": "images2style-webpack-plugin",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Webpack plugin that automatically generates CSS background styles for images",
   "author": "Porky Ke",
   "homepage": "https://github.com/porky-prince/web-build-tools/packages/images2style-webpack-plugin#readme",
