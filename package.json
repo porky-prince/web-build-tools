@@ -14,7 +14,7 @@
   "scripts": {
     "prepare": "husky init",
     "commitlint": "commitlint --from=main",
-    "lint:prettier": "prettier \"{**/*,*}.{js,ts,json}\" -l",
+    "lint:prettier": "prettier \"{**/*,*}.{js,ts,json}\" --cache -l",
     "lint:code": "eslint --cache .",
     "lint": "npm-run-all -l -p \"lint:**\"",
     "pretest": "npm run lint",
