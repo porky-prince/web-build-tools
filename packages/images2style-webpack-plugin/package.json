@@ -10,7 +10,6 @@
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "README.md",
     "CHANGELOG.md"
   ],
   "publishConfig": {
