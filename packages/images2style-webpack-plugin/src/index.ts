@@ -10,6 +10,18 @@ type Compiler = webpack.Compiler;
 // type Compilation = webpack.Compilation;
 type Logger = ReturnType<Compiler['getInfrastructureLogger']>;
 
+/**
+ * Options for Images2styleWebpackPlugin
+ *
+ * @property {string} cwd - The working directory for relative paths. Defaults to process.cwd().
+ * @property {string} src - The source directory containing images. Must be a directory.
+ * @property {string} dest - The output file path for generated styles. Must be a file.
+ * @property {function} [exclude] - Function to exclude files/directories from processing. Receives parsed path info and full path. Return true to exclude.
+ * @property {function} [include] - Function to include files/directories for processing. Receives parsed path info and full path. Return true to include.
+ * @property {function} [transform] - Function to transform generated CSS for each image. Receives CSS content, parsed path info, and full path. Returns transformed CSS string.
+ * @property {number} [delay] - Debounce delay (ms) for packing after changes. Default is 200ms.
+ * @property {boolean} [silent] - If true, suppresses plugin logging. Default is true.
+ */
 export interface Images2styleOptions {
   cwd?: string;
   src: string;
@@ -48,11 +60,23 @@ function toPercentStr(num: number): string {
   return toPercent(num, 4) + '';
 }
 
+/**
+ * Main Webpack plugin class for generating CSS styles from images.
+ * Watches the source directory, processes images and atlas files, and writes CSS to the destination file.
+ */
 export default class Images2styleWebpackPlugin implements Plugin {
+  // Plugin options (fully resolved with defaults)
   private _options: Required<Images2styleOptions>;
+  // File watcher instance
   private _watcher: FSWatcher | null = null;
+  // Webpack logger instance
   private _logger: Logger | null = null;
 
+  /**
+   * Constructor
+   * Validates and initializes plugin options.
+   * Throws error if src is not a directory or dest is not a file.
+   */
   constructor(options: Images2styleOptions) {
     if (path.extname(options.src)) {
       throw new Error('The options.src must be a directory.');
@@ -72,10 +96,14 @@ export default class Images2styleWebpackPlugin implements Plugin {
     };
   }
 
+  // Returns the plugin name for logging
   private get pluginName() {
     return this.constructor.name;
   }
 
+  /**
+   * Logs messages using Webpack infrastructure logger if not silent.
+   */
   private log(...args: any[]): void {
     if (!this._logger || this._options.silent) {
       return;
@@ -83,6 +111,10 @@ export default class Images2styleWebpackPlugin implements Plugin {
     this._logger.log(...args);
   }
 
+  /**
+   * Initializes and returns a file watcher for the source directory.
+   * Calls the provided callback on file events.
+   */
   private getWatcher(
     cb: (event: string, path: string, stats?: fs.Stats) => void
   ) {
@@ -97,6 +129,10 @@ export default class Images2styleWebpackPlugin implements Plugin {
     return this._watcher;
   }
 
+  /**
+   * Webpack plugin entry point.
+   * Sets up hooks for build and watch modes, triggers packing and file watching.
+   */
   apply(compiler: Compiler) {
     this._logger = compiler.getInfrastructureLogger(this.pluginName);
     const { src, dest, delay } = this._options;
@@ -109,8 +145,10 @@ export default class Images2styleWebpackPlugin implements Plugin {
     };
     const delayPack = debounce(pack, delay);
 
+    // Pack images when build starts
     compiler.hooks.run.tapPromise(this.pluginName, pack);
 
+    // Watch for changes and repack in watch mode
     let once = false;
     compiler.hooks.watchRun.tapPromise(this.pluginName, async () => {
       if (once) {
@@ -128,6 +166,12 @@ export default class Images2styleWebpackPlugin implements Plugin {
     });
   }
 
+  /**
+   * Recursively scans the source directory for image files and generates CSS code for each.
+   * If an atlas JSON file is found, generates CSS for spritesheet frames.
+   * @param src Source directory
+   * @param res Accumulator for generated CSS code
+   */
   private async pack(src: string, res = { code: '' }) {
     this.log('pack', src);
     const { exclude, include } = this._options;
@@ -159,6 +203,13 @@ export default class Images2styleWebpackPlugin implements Plugin {
     return res;
   }
 
+  /**
+   * Generates CSS for a single image or atlas frame.
+   * If a corresponding atlas JSON file exists, generates CSS for each frame in the atlas.
+   * Otherwise, generates a simple background-image CSS rule for the image.
+   * @param info Parsed path info for the image file
+   * @param srcPath Full path to the image file
+   */
   private async genStyle(info: path.ParsedPath, srcPath: string) {
     const { cwd, src, transform } = this._options;
     const baseDir = path.dirname(src);
