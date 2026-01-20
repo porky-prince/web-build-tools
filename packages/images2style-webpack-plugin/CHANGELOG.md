@@ -1,5 +1,14 @@
 # images2style-webpack-plugin
 
+## 0.0.4
+
+### Patch Changes
+
+- [#19](https://github.com/porky-prince/web-build-tools/pull/19) [`3c13829`](https://github.com/porky-prince/web-build-tools/commit/3c13829e48ffc4e25207d10d641072df67113556) Thanks [@porky-prince](https://github.com/porky-prince)! - feat: update TypeScript configuration, add some comments, add Jest config, and modify tests
+
+- Updated dependencies [[`3c13829`](https://github.com/porky-prince/web-build-tools/commit/3c13829e48ffc4e25207d10d641072df67113556)]:
+  - web-build-utils@0.0.3
+
 ## 0.0.3
 
 ### Patch Changes
