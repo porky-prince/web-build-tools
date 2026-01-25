@@ -69,6 +69,37 @@ importers:
         specifier: ^8.45.0
         version: 8.45.0(eslint@9.36.0(jiti@2.6.0))(typescript@5.9.3)
 
+  packages/images2atlas:
+    dependencies:
+      '@types/spritesmith':
+        specifier: ^3.4.5
+        version: 3.4.5
+      chokidar:
+        specifier: ^4.0.3
+        version: 4.0.3
+      debounce:
+        specifier: ^2.2.0
+        version: 2.2.0
+      fs-extra:
+        specifier: ^11.3.2
+        version: 11.3.2
+      spritesheet-templates:
+        specifier: ^10.5.2
+        version: 10.5.2
+      spritesmith:
+        specifier: ^3.5.1
+        version: 3.5.1
+      web-build-utils:
+        specifier: workspace:^
+        version: link:../web-build-utils
+    devDependencies:
+      '@types/fs-extra':
+        specifier: ^11.0.4
+        version: 11.0.4
+      '@types/node':
+        specifier: ^24.6.2
+        version: 24.6.2
+
   packages/images2atlas-webpack-plugin:
     dependencies:
       '@types/spritesmith':
