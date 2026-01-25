@@ -13,7 +13,7 @@ and produces atlas files per directory with configurable formats and suffixes.
 
 ## Installation
 ```
-npm install images2atlas
+npm install images2atlas --save-dev
 ```
 
 ## Usage
