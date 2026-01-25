@@ -17,6 +17,7 @@ import { isSafeFilename } from 'web-build-utils';
  * @property {string} [suffix] - Suffix for output files (e.g., '-atlas'). Default is '-atlas'.
  * @property {number} [delay] - Debounce delay (ms) for packing after changes. Default is 500ms.
  * @property {boolean} [silent] - If true, suppresses plugin logging. Default is true.
+ * @property {boolean} [watch] - If true, watch src and re-pack on changes. Default is false.
  * @property {object} [spritesmithOptions] - Options for Spritesmith (e.g., padding, export format, quality).
  * @property {object} [templatesOptions] - Options for spritesheet-templates (e.g., output format, custom templates).
  */
@@ -35,7 +36,7 @@ export interface Images2atlasOptions {
   templatesOptions?: Parameters<typeof templater>[1];
 }
 
-// Supported output template formats
+// Supported output template formats for spritesheet-templates.
 const formatTypes = ['css', 'json', 'less', 'sass', 'scss', 'styl'];
 
 /**
@@ -118,6 +119,7 @@ class Images2atlas {
     const pack = () => this.pack(src, dest);
 
     if (watch) {
+      // Debounce to avoid re-packing on bursty file events.
       const delayPack = debounce(pack, delay);
       this.getWatcher((e, p) => {
         if (!isSafeFilename(p, true)) {
@@ -153,7 +155,7 @@ class Images2atlas {
         if (info.ext) {
           // File
           if (info.ext === '.png' && include(info, srcPath)) {
-            // Add png
+            // Collect PNGs for atlas generation later.
             pngPaths.push(srcPath);
           } else {
             // Copy single file
@@ -165,6 +167,7 @@ class Images2atlas {
         }
       })
     );
+    // Generate atlas and template outputs for collected PNGs.
     await this.packSpriteSheet(pngPaths, dest);
     this.log('packed', dest);
   }
@@ -203,6 +206,7 @@ class Images2atlas {
           // Spritesheet properties and output image path
           const spritesheet = {
             ...result.properties,
+            // Use a "~/" prefix so consumers can map to their own loaders.
             image: `~/${path.relative(cwd, dest) + suffix}.png`,
           };
           // Generate template/style file
