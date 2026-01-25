@@ -8,7 +8,7 @@ and produces atlas files per directory with configurable formats and suffixes.
 - Directory-based spritesheet generation (one atlas per folder).
 - Recursive traversal with include/exclude filters.
 - Copies non-PNG files into the destination tree.
-- Multiple template formats via `spritesheet-templates`.
+- Multiple template formats via [`spritesheet-templates`](https://github.com/twolfson/spritesheet-templates).
 - Optional watch mode with debounced re-pack on changes.
 
 ## Installation
@@ -40,8 +40,8 @@ await images2atlas({
 | `delay` | `number` | `500` | Debounce delay (ms) for watch mode. |
 | `silent` | `boolean` | `true` | Suppress logging when `true`. |
 | `watch` | `boolean` | `false` | Watch `src` and re-pack on changes. |
-| `spritesmithOptions` | `object` | `{ padding: 2, exportOpts: { format: 'png', quality: 100 } }` | Options passed to Spritesmith. |
-| `templatesOptions` | `object` | `{}` | Options passed to spritesheet-templates. |
+| `spritesmithOptions` | `object` | `{ padding: 2, exportOpts: { format: 'png', quality: 100 } }` | Options passed to [`spritesmith`](https://github.com/twolfson/spritesmith). |
+| `templatesOptions` | `object` | `{}` | Options passed to [`spritesheet-templates`](https://github.com/twolfson/spritesheet-templates). |
 
 ## Output Behavior
 Each directory with PNG files generates a pair of outputs in its corresponding
@@ -82,4 +82,4 @@ dest/
 - `include` only affects whether a PNG participates in the atlas. If `include`
   returns `false`, the PNG is copied instead.
 - `exclude` skips both atlas participation and file copying for the matched path.
-- Filenames are filtered via `isSafeFilename` from `web-build-utils`.
+- Filenames are filtered via `isSafeFilename` from [`web-build-utils`](https://github.com/porky-prince/web-build-tools/packages/web-build-utils).
