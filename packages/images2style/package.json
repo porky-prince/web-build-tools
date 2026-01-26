@@ -1,0 +1,43 @@
+{
+  "name": "images2style",
+  "version": "0.0.0",
+  "description": "Webpack plugin that automatically generates CSS background styles for images",
+  "author": "Porky Ke",
+  "homepage": "https://github.com/porky-prince/web-build-tools/packages/images2style#readme",
+  "bugs": "https://github.com/porky-prince/web-build-tools/issues",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:porky-prince/web-build-tools.git",
+    "directory": "packages/images2style"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "tsc": "tsc --declaration",
+    "build": "del dist && npm run tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "chokidar": "^4.0.3",
+    "debounce": "^2.2.0",
+    "fs-extra": "^11.3.2",
+    "web-build-utils": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.6.2"
+  },
+  "keywords": [
+    "icons",
+    "images",
+    "style"
+  ]
+}
