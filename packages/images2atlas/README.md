@@ -13,7 +13,7 @@ and produces atlas files per directory with configurable formats and suffixes.
 
 ## Installation
 ```
-npm install images2atlas --save-dev
+npm i images2atlas --save-dev
 ```
 
 ## Usage
@@ -46,8 +46,8 @@ await images2atlas({
 Each directory with PNG files generates a pair of outputs in its corresponding
 `dest` folder:
 
-- `${dest}${suffix}.png` (the atlas image)
-- `${dest}${suffix}.<ext>` (template output)
+- `${src}${suffix}.png` (the atlas image)
+- `${src}${suffix}.<ext>` (template output)
 
 The template file extension is derived from `templatesOptions.format`, supporting:
 `css`, `json`, `less`, `sass`, `scss`, `styl`. Unknown formats fall back to `txt`.
@@ -64,16 +64,16 @@ src/
 └── icons/
     ├── a.png
     ├── b.png
-    └── readme.txt
+    └── bg.jpg
 ```
 
 Output (with `suffix: '-atlas'` and `format: 'css'`):
 ```
 dest/
+├── icons-atlas.png
+├── icons-atlas.css
 └── icons/
-    ├── readme.txt
-    ├── icons-atlas.png
-    └── icons-atlas.css
+    └── bg.jpg
 ```
 
 ## Notes

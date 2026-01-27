@@ -105,6 +105,7 @@ class Images2atlas {
     cb: (event: string, path: string, stats?: fs.Stats) => void
   ) {
     if (!this._watcher) {
+      fs.ensureDirSync(this._options.src);
       this._watcher = watch('.', {
         cwd: this._options.src,
         ignoreInitial: true,

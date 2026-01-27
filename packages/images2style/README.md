@@ -13,7 +13,7 @@ for each frame in that atlas instead of a single image rule.
 ## Install
 
 ```
-npm install images2style --save-dev
+npm i images2style --save-dev
 ```
 
 ## Usage
