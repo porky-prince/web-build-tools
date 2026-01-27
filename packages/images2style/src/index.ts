@@ -164,7 +164,7 @@ class Images2style {
         if (info.ext) {
           // File
           if (
-            /^\.(jpe?g|png|gif|svg|webp)$/i.test(info.ext) &&
+            /^\.(jpe?g|png|gif|svg|webp|avif)$/i.test(info.ext) &&
             include(info, srcPath)
           ) {
             const code = await this.genStyle(info, srcPath);
@@ -204,10 +204,10 @@ class Images2style {
         const { w: width, h: height } = json.meta.size;
         Object.keys(json.frames).forEach((name) => {
           const { x, y, w, h } = json.frames[name].frame;
-          const diffW = width - w || 1;
-          const diffH = height - h || 1;
-          const percentX = toPercentStr(x / diffW);
-          const percentY = toPercentStr(y / diffH);
+          const diffW = width - w;
+          const diffH = height - h;
+          const percentX = toPercentStr(diffW > 0 ? x / diffW : 0);
+          const percentY = toPercentStr(diffH > 0 ? y / diffH : 0);
           const percentW = toPercentStr(width / w);
           const percentH = toPercentStr(height / h);
           content += atlasStyleTemplate
