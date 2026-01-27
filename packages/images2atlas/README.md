@@ -24,7 +24,6 @@ await images2atlas({
   src: '/path/to/icons',
   dest: '/path/to/output/icons',
   templatesOptions: { format: 'css' },
-  suffix: '-atlas',
 });
 ```
 

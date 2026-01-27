@@ -25,7 +25,6 @@ export default {
       src: '/path/to/icons',
       dest: '/path/to/output/icons',
       templatesOptions: { format: 'css' },
-      suffix: '-atlas',
     }),
   ],
 };
