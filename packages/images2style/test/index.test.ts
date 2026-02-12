@@ -72,14 +72,13 @@ describe('images2style', () => {
   });
 
   test('generates css for supported images and includes base template', async () => {
-    const { tempDir, srcDir, destFile } = await makeFixtureDirs();
+    const { srcDir, destFile } = await makeFixtureDirs();
 
     await writeFile(path.join(srcDir, 'logo.png'), Buffer.from('png'));
     await writeFile(path.join(srcDir, 'banner.jpg'), Buffer.from('jpg'));
     await writeFile(path.join(srcDir, 'readme.txt'), 'hello');
 
     await images2style({
-      cwd: tempDir,
       src: srcDir,
       dest: destFile,
       silent: true,
@@ -95,7 +94,7 @@ describe('images2style', () => {
   });
 
   test('skips entries based on include, exclude, and isSafeFilename', async () => {
-    const { tempDir, srcDir, destFile } = await makeFixtureDirs();
+    const { srcDir, destFile } = await makeFixtureDirs();
 
     await writeFile(path.join(srcDir, 'keep.png'), Buffer.from('png'));
     await writeFile(path.join(srcDir, 'skip.png'), Buffer.from('png'));
@@ -110,7 +109,6 @@ describe('images2style', () => {
     });
 
     await images2style({
-      cwd: tempDir,
       src: srcDir,
       dest: destFile,
       include: (info) => info.name !== 'skip',
@@ -127,7 +125,7 @@ describe('images2style', () => {
   });
 
   test('applies transform to image style output', async () => {
-    const { tempDir, srcDir, destFile } = await makeFixtureDirs();
+    const { srcDir, destFile } = await makeFixtureDirs();
     const transform = jest.fn((content: string) => {
       return `${content}\n/* transformed */`;
     });
@@ -135,7 +133,6 @@ describe('images2style', () => {
     await writeFile(path.join(srcDir, 'logo.png'), Buffer.from('png'));
 
     await images2style({
-      cwd: tempDir,
       src: srcDir,
       dest: destFile,
       transform,
@@ -150,7 +147,7 @@ describe('images2style', () => {
   });
 
   test('generate atlas rules with percent fallback', async () => {
-    const { tempDir, srcDir, destFile } = await makeFixtureDirs();
+    const { srcDir, destFile } = await makeFixtureDirs();
 
     // Single Frame
     await writeFile(
@@ -215,7 +212,7 @@ describe('images2style', () => {
       meta: {
         app: 'spritesheet-templates',
         version: '10.5.2',
-        image: './sheets.png',
+        image: 'sheets.png',
         scale: 1,
         size: {
           w: 658,
@@ -225,7 +222,6 @@ describe('images2style', () => {
     });
 
     await images2style({
-      cwd: tempDir,
       src: srcDir,
       dest: destFile,
       silent: true,
@@ -252,13 +248,12 @@ describe('images2style', () => {
   });
 
   test('falls back to image style when atlas json is invalid', async () => {
-    const { tempDir, srcDir, destFile } = await makeFixtureDirs();
+    const { srcDir, destFile } = await makeFixtureDirs();
 
     await writeFile(path.join(srcDir, 'bad.png'), Buffer.from('png'));
     await writeJson(path.join(srcDir, 'bad.json'), { foo: 'bar' });
 
     await images2style({
-      cwd: tempDir,
       src: srcDir,
       dest: destFile,
       silent: true,
@@ -271,7 +266,7 @@ describe('images2style', () => {
   });
 
   test('recursively collects nested images', async () => {
-    const { tempDir, srcDir, destFile } = await makeFixtureDirs();
+    const { srcDir, destFile } = await makeFixtureDirs();
 
     await writeFile(
       path.join(srcDir, 'icons', 'ui', 'play.svg'),
@@ -279,7 +274,6 @@ describe('images2style', () => {
     );
 
     await images2style({
-      cwd: tempDir,
       src: srcDir,
       dest: destFile,
       silent: true,

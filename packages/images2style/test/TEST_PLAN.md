@@ -23,7 +23,6 @@
 ## Fixtures and Helpers
 - Create temporary directories and empty image files (contents are not read).
 - Use a minimal atlas JSON file with `meta.size` and `frames`.
-- Set `cwd` to the temp root to make `imagePath` predictable.
 
 ## Example Fixture Layouts
 **Example A: Flat images**

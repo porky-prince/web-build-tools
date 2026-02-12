@@ -9,7 +9,6 @@ import { isSafeFilename } from 'web-build-utils';
 /**
  * Options for Images2atlas
  *
- * @property {string} cwd - The working directory for relative paths. Defaults to process.cwd().
  * @property {string} src - The source directory containing images to pack. Must be a directory.
  * @property {string} dest - The destination directory for output files. Must be a directory.
  * @property {function} [exclude] - Function to exclude files/directories from packing. Receives parsed path info and full path. Return true to exclude.
@@ -22,7 +21,6 @@ import { isSafeFilename } from 'web-build-utils';
  * @property {object} [templatesOptions] - Options for spritesheet-templates (e.g., output format, custom templates).
  */
 export interface Images2atlasOptions {
-  cwd?: string;
   src: string;
   dest: string;
   exclude?: (srcInfo: path.ParsedPath, src: string) => boolean;
@@ -68,7 +66,6 @@ class Images2atlas {
     }
 
     this._options = {
-      cwd: process.cwd(),
       exclude: () => false,
       include: () => true,
       suffix: '-atlas',
@@ -183,7 +180,7 @@ class Images2atlas {
     if (pngPaths.length === 0) {
       return;
     }
-    const { cwd, suffix, spritesmithOptions, templatesOptions } = this._options;
+    const { suffix, spritesmithOptions, templatesOptions } = this._options;
     const format = templatesOptions.format || '';
     await new Promise<void>((resolve, reject) => {
       Spritesmith.run(
@@ -207,8 +204,7 @@ class Images2atlas {
           // Spritesheet properties and output image path
           const spritesheet = {
             ...result.properties,
-            // Use a "~/" prefix so consumers can map to their own loaders.
-            image: `~/${path.relative(cwd, dest) + suffix}.png`,
+            image: `${path.basename(dest) + suffix}.png`,
           };
           // Generate template/style file
           const temp = templater(

@@ -7,7 +7,6 @@ import { isSafeFilename, toPercent } from 'web-build-utils';
 /**
  * Options for Images2style
  *
- * @property {string} cwd - The working directory for relative paths. Defaults to process.cwd().
  * @property {string} src - The source directory containing images. Must be a directory.
  * @property {string} dest - The output file path for generated styles. Must be a file.
  * @property {function} [exclude] - Function to exclude files/directories from processing. Receives parsed path info and full path. Return true to exclude.
@@ -18,7 +17,6 @@ import { isSafeFilename, toPercent } from 'web-build-utils';
  * @property {boolean} [watch] - If true, watch src and re-pack on changes. Default is false.
  */
 export interface Images2styleOptions {
-  cwd?: string;
   src: string;
   dest: string;
   exclude?: (srcInfo: path.ParsedPath, src: string) => boolean;
@@ -82,7 +80,6 @@ class Images2style {
     }
 
     this._options = {
-      cwd: process.cwd(),
       exclude: () => false,
       include: () => true,
       transform: (content) => content,
@@ -193,14 +190,14 @@ class Images2style {
    * @param srcPath Full path to the image file
    */
   private async genStyle(info: path.ParsedPath, srcPath: string) {
-    const { cwd, src, transform } = this._options;
+    const { src, dest, transform } = this._options;
     const baseDir = path.dirname(src);
     const srcDir = path.dirname(srcPath);
     // Class name is derived from the relative path + file name to avoid collisions.
     const className =
       path.relative(baseDir, srcDir).replace(/[\\/]+/g, '-') + '-' + info.name;
-    // Use a tilde path so bundlers can resolve it from project root.
-    const imagePath = `~/${path.relative(cwd, srcPath)}`;
+    // Use the relative path from the dest's directory to the src path.
+    const imagePath = path.relative(path.dirname(dest), srcPath);
 
     let content = '';
     const atlasPath = path.join(srcDir, info.name + '.json');

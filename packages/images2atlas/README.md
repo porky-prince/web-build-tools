@@ -32,7 +32,6 @@ await images2atlas({
 | --- | --- | --- | --- |
 | `src` | `string` | required | Source directory containing images. Must be a directory. |
 | `dest` | `string` | required | Destination directory (no file extension). |
-| `cwd` | `string` | `process.cwd()` | Base path for generating the spritesheet image reference. |
 | `exclude` | `(info, src) => boolean` | `() => false` | Return `true` to skip a file or folder. |
 | `include` | `(info, src) => boolean` | `() => true` | Return `true` to include a PNG in the atlas. |
 | `suffix` | `string` | `-atlas` | Output suffix for atlas files. |
@@ -54,7 +53,7 @@ The template file extension is derived from `templatesOptions.format`, supportin
 
 The spritesheet image reference in templates uses the pattern:
 ```
-~/<relative-path-from-cwd><suffix>.png
+./<dest-dir-name><suffix>.png
 ```
 
 ## Example Structure
