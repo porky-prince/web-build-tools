@@ -49,3 +49,7 @@ Run the tests from the repo root:
 ```
 pnpm --filter images2style-webpack-plugin test
 ```
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md) for release history.

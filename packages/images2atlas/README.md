@@ -89,3 +89,7 @@ Use these notes to understand how filters and paths are interpreted.
 - `src` must exist and be a directory path with no file extension.
 - `dest` must be a directory path with no file extension.
 - Filenames are filtered via `isSafeFilename` from [`web-build-utils`](https://github.com/porky-prince/web-build-tools/packages/web-build-utils).
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md) for release history.

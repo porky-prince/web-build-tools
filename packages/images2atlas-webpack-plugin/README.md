@@ -57,3 +57,7 @@ single tree, this plugin is a better fit:
 
 If you need deep webpack asset integration or prefer a compilation-driven
 pipeline, `webpack-spritesmith` may be a better match.
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md) for release history.

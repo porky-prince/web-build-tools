@@ -71,3 +71,7 @@ Returns the percentage value as a number.
 `isSafeFilename` validates only the basename of a path. It rejects empty values
 and names starting with a dot. Allowed characters are letters, numbers,
 underscores, dots, hyphens, at signs, and dollar signs.
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md) for release history.

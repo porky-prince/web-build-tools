@@ -171,3 +171,7 @@ await images2style({
   transform: (content) => `${content}\n/* customized */`,
 });
 ```
+
+## Changelog
+
+See [`CHANGELOG.md`](CHANGELOG.md) for release history.
