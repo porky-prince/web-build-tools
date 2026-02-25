@@ -5,6 +5,7 @@ of PNG images. This module scans folders recursively, copies non-PNG files as-is
 and produces atlas files per directory with configurable formats and suffixes.
 
 ## Core Features
+Use these features to understand what the tool produces and how it behaves.
 - Directory-based spritesheet generation (one atlas per folder).
 - Recursive traversal with include/exclude filters.
 - Copies non-PNG files into the destination tree.
@@ -28,6 +29,7 @@ await images2atlas({
 ```
 
 ## Options
+Use these options to control inputs, outputs, and packing behavior.
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
 | `src` | `string` | required | Source directory containing images. Must be a directory. |
@@ -50,11 +52,15 @@ Each directory with PNG files generates a pair of outputs in its corresponding
 
 The template file extension is derived from `templatesOptions.format`, supporting:
 `css`, `json`, `less`, `sass`, `scss`, `styl`. Unknown formats fall back to `txt`.
+The format check is a prefix match, so `css` also matches formats like
+`css.handlebars`.
 
 The spritesheet image reference in templates uses the pattern:
 ```
-./<dest-dir-name><suffix>.png
+<dest-dir-name><suffix>.png
 ```
+If a directory contains no PNG files, no atlas or template files are generated
+for that directory.
 
 ## Example Structure
 Input:
@@ -76,8 +82,11 @@ dest/
 ```
 
 ## Notes
+Use these notes to understand how filters and paths are interpreted.
 - Only `.png` files are packed into the atlas. Non-PNG files are copied through.
 - `include` only affects whether a PNG participates in the atlas. If `include`
   returns `false`, the PNG is copied instead.
 - `exclude` skips both atlas participation and file copying for the matched path.
+- `src` must exist and be a directory path with no file extension.
+- `dest` must be a directory path with no file extension.
 - Filenames are filtered via `isSafeFilename` from [`web-build-utils`](https://github.com/porky-prince/web-build-tools/packages/web-build-utils).
