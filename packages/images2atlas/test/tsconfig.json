@@ -1,0 +1,5 @@
+{
+  "extends": "../tsconfig.json",
+  "include": ["./", "../src", "../spritesheet-templates.d.ts"],
+  "exclude": []
+}
