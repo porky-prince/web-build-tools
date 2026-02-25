@@ -182,7 +182,6 @@ describe('images2atlas', () => {
       src: srcDir,
       dest: destDir,
       include: () => false,
-      templatesOptions: { format: 'css' },
       silent: true,
     });
 
@@ -204,7 +203,6 @@ describe('images2atlas', () => {
       src: srcDir,
       dest: destDir,
       exclude: () => true,
-      templatesOptions: { format: 'css' },
       silent: true,
     });
 
@@ -224,20 +222,20 @@ describe('images2atlas', () => {
       src: srcDir,
       dest: destDir,
       suffix: '-atlas',
-      templatesOptions: { format: 'css' },
+      templatesOptions: { format: 'stylus' },
       silent: true,
     });
 
-    logTrees('atlas-css', srcDir, outputRoot);
+    logTrees('atlas-styl', srcDir, outputRoot);
 
     expect(await fs.pathExists(destDir + '-atlas.png')).toBe(true);
-    expect(await fs.pathExists(destDir + '-atlas.css')).toBe(true);
-    expect(await fs.readFile(destDir + '-atlas.css', 'utf8')).toBe(
+    expect(await fs.pathExists(destDir + '-atlas.styl')).toBe(true);
+    expect(await fs.readFile(destDir + '-atlas.styl', 'utf8')).toBe(
       'TEMPLATE_OUTPUT'
     );
   });
 
-  test('falls back to .txt when format is unsupported', async () => {
+  test('generates atlas files with custom format', async () => {
     const { srcDir, destDir, outputRoot } = await makeFixtureDirs();
 
     await writeFile(path.join(srcDir, 'a.png'), Buffer.from('png'));
@@ -249,9 +247,9 @@ describe('images2atlas', () => {
       silent: true,
     });
 
-    logTrees('atlas-txt', srcDir, outputRoot);
+    logTrees('atlas-custom', srcDir, outputRoot);
 
-    expect(await fs.pathExists(destDir + '-atlas.txt')).toBe(true);
+    expect(await fs.pathExists(destDir + '-atlas.custom')).toBe(true);
     expect(await fs.pathExists(destDir + '-atlas.png')).toBe(true);
   });
 
@@ -264,7 +262,6 @@ describe('images2atlas', () => {
     await images2atlas({
       src: srcDir,
       dest: destDir,
-      templatesOptions: { format: 'css' },
       silent: true,
     });
 
@@ -286,7 +283,6 @@ describe('images2atlas', () => {
     await images2atlas({
       src: srcDir,
       dest: destDir,
-      templatesOptions: { format: 'css' },
       silent: true,
     });
 

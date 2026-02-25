@@ -181,7 +181,7 @@ class Images2atlas {
       return;
     }
     const { suffix, spritesmithOptions, templatesOptions } = this._options;
-    const format = templatesOptions.format || '';
+    const format = templatesOptions.format || 'css';
     await new Promise<void>((resolve, reject) => {
       Spritesmith.run(
         {
@@ -216,7 +216,7 @@ class Images2atlas {
           );
           // Determine output file extension
           const ext =
-            formatTypes.find((type) => format.startsWith(type)) || 'txt';
+            formatTypes.find((type) => format.startsWith(type)) || format;
           await Promise.all([
             fs.outputFile(dest + suffix + '.' + ext, temp),
             fs.outputFile(dest + suffix + '.png', result.image),

@@ -24,7 +24,6 @@ import { images2atlas } from 'images2atlas';
 await images2atlas({
   src: '/path/to/icons',
   dest: '/path/to/output/icons',
-  templatesOptions: { format: 'css' },
 });
 ```
 
@@ -41,7 +40,7 @@ Use these options to control inputs, outputs, and packing behavior.
 | `silent` | `boolean` | `true` | Suppress logging when `true`. |
 | `watch` | `boolean` | `false` | Watch `src` and re-pack on changes. |
 | `spritesmithOptions` | `object` | `{ padding: 2, exportOpts: { format: 'png', quality: 100 } }` | Options passed to [`spritesmith`](https://github.com/twolfson/spritesmith). |
-| `templatesOptions` | `object` | `{}` | Options passed to [`spritesheet-templates`](https://github.com/twolfson/spritesheet-templates). |
+| `templatesOptions` | `object` | `{ format: 'css' }` | Options passed to [`spritesheet-templates`](https://github.com/twolfson/spritesheet-templates?tab=readme-ov-file). |
 
 ## Output Behavior
 Each directory with PNG files generates a pair of outputs in its corresponding
@@ -51,9 +50,9 @@ Each directory with PNG files generates a pair of outputs in its corresponding
 - `${src}${suffix}.<ext>` (template output)
 
 The template file extension is derived from `templatesOptions.format`, supporting:
-`css`, `json`, `less`, `sass`, `scss`, `styl`. Unknown formats fall back to `txt`.
-The format check is a prefix match, so `css` also matches formats like
-`css.handlebars`.
+`css`, `json`, `less`, `sass`, `scss`, `styl` and [`custom format`](https://github.com/twolfson/spritesheet-templates?tab=readme-ov-file#custom).
+The format check is a prefix match, so `styl` also matches formats like
+`stylus`.
 
 The spritesheet image reference in templates uses the pattern:
 ```

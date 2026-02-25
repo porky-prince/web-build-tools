@@ -24,7 +24,6 @@ export default {
     new Images2atlasWebpackPlugin({
       src: '/path/to/icons',
       dest: '/path/to/output/icons',
-      templatesOptions: { format: 'css' },
     }),
   ],
 };
