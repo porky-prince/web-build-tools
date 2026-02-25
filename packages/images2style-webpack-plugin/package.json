@@ -26,18 +26,13 @@
     "test": "jest"
   },
   "dependencies": {
-    "chokidar": "^4.0.3",
-    "debounce": "^2.2.0",
-    "fs-extra": "^11.3.2",
-    "web-build-utils": "workspace:^"
+    "images2style": "workspace:^"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
-    "@types/node": "^24.6.2",
     "webpack": "^5.102.0"
   },
   "peerDependencies": {
-    "webpack": "^5.1.0"
+    "webpack": ">=4"
   },
   "keywords": [
     "icons",

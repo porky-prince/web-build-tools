@@ -134,25 +134,10 @@ importers:
 
   packages/images2style-webpack-plugin:
     dependencies:
-      chokidar:
-        specifier: ^4.0.3
-        version: 4.0.3
-      debounce:
-        specifier: ^2.2.0
-        version: 2.2.0
-      fs-extra:
-        specifier: ^11.3.2
-        version: 11.3.2
-      web-build-utils:
+      images2style:
         specifier: workspace:^
-        version: link:../web-build-utils
+        version: link:../images2style
     devDependencies:
-      '@types/fs-extra':
-        specifier: ^11.0.4
-        version: 11.0.4
-      '@types/node':
-        specifier: ^24.6.2
-        version: 24.6.2
       webpack:
         specifier: ^5.102.0
         version: 5.102.0
