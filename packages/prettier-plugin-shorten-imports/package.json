@@ -1,0 +1,50 @@
+{
+  "name": "prettier-plugin-shorten-imports",
+  "version": "0.0.0",
+  "description": "Prettier plugin that shortens local import paths",
+  "author": "Porky Ke",
+  "homepage": "https://github.com/porky-prince/web-build-tools/packages/prettier-plugin-shorten-imports#readme",
+  "bugs": "https://github.com/porky-prince/web-build-tools/issues",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:porky-prince/web-build-tools.git",
+    "directory": "packages/prettier-plugin-shorten-imports"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "tsc": "tsc --declaration",
+    "build": "del dist && npm run tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.2",
+    "jsonc-parser": "^3.2.0",
+    "resolve": "^1.22.10",
+    "typescript": "^5.9.3",
+    "tsconfig-paths": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.6.2",
+    "@types/resolve": "^1.20.5"
+  },
+  "peerDependencies": {
+    "prettier": ">=3"
+  },
+  "keywords": [
+    "prettier",
+    "prettier-plugin",
+    "shorten",
+    "imports",
+    "paths"
+  ]
+}
