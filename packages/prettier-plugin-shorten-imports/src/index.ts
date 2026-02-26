@@ -1,39 +1,31 @@
 import type { Parser, Plugin } from 'prettier';
-import * as babelParsers from 'prettier/plugins/babel';
-import * as htmlParsers from 'prettier/plugins/html';
-import * as tsParsers from 'prettier/plugins/typescript';
+import { parsers as babelParsers } from 'prettier/plugins/babel';
+import { parsers as htmlParsers } from 'prettier/plugins/html';
+import { parsers as tsParsers } from 'prettier/plugins/typescript';
 import { shortenImports } from './shorten-imports';
 
-// Prettier preprocess hook to rewrite imports before formatting.
-const preprocess = (text: string, options: { filepath?: string }) =>
-  shortenImports(text, options.filepath);
-
-// Wrap built-in parsers so the plugin works across JS/TS/Vue.
-const parsers: Plugin['parsers'] = {
-  babel: {
-    ...(babelParsers.parsers.babel as Parser),
-    preprocess,
-  },
-  'babel-flow': {
-    ...(babelParsers.parsers['babel-flow'] as Parser),
-    preprocess,
-  },
-  'babel-ts': {
-    ...(babelParsers.parsers['babel-ts'] as Parser),
-    preprocess,
-  },
-  typescript: {
-    ...(tsParsers.parsers.typescript as Parser),
-    preprocess,
-  },
-  vue: {
-    ...(htmlParsers.parsers.vue as Parser),
-    preprocess,
-  },
+// Set `shortenImports` as the given parser's `preprocess` hook, or merge it with the existing one.
+const withShortenImportsPreprocess = (parser: Parser): Parser => {
+  return {
+    ...parser,
+    // Prettier invokes preprocess before parsing; we keep the original hook,
+    // then run our import rewriting on the resulting text.
+    preprocess: (code, options) =>
+      shortenImports(
+        parser.preprocess ? parser.preprocess(code, options) : code,
+        options?.filepath
+      ),
+  };
 };
 
 const plugin: Plugin = {
-  parsers,
+  // Wrap built-in parsers so the plugin works across JS/TS/Vue.
+  parsers: {
+    babel: withShortenImportsPreprocess(babelParsers.babel),
+    'babel-ts': withShortenImportsPreprocess(babelParsers['babel-ts']),
+    typescript: withShortenImportsPreprocess(tsParsers.typescript),
+    vue: withShortenImportsPreprocess(htmlParsers.vue),
+  },
 };
 
 export default plugin;
