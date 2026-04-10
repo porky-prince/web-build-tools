@@ -36,6 +36,24 @@ export interface ConfigContext {
 // The cache avoids re-reading tsconfig files for each formatted file.
 const configPathCache = new Map<string, string | null>();
 const configCache = new Map<string, ConfigContext | null>();
+// Cache merged compilerOptions so every file in the same project reuses the
+// resolved extends chain instead of reparsing it.
+const compilerOptionsCache = new Map<string, ResolvedCompilerOptions | null>();
+
+interface RawCompilerOptions {
+  baseUrl?: string;
+  paths?: Record<string, string[] | string>;
+}
+
+interface RawConfigFile {
+  extends?: string | string[];
+  compilerOptions?: RawCompilerOptions;
+}
+
+interface ResolvedCompilerOptions {
+  baseUrl?: string;
+  paths: PathsConfig | null;
+}
 
 export function getConfigContext(filePath: string): ConfigContext | null {
   // Build alias matching context from the nearest config file. The context
@@ -51,10 +69,12 @@ export function getConfigContext(filePath: string): ConfigContext | null {
   }
 
   const configDir = path.dirname(configPath);
-  const rawConfig = readConfigFile(configPath);
-  const compilerOptions = rawConfig?.compilerOptions ?? {};
-  const rawPaths = compilerOptions.paths ?? {};
-  const paths = normalizePaths(rawPaths);
+  const compilerOptions = resolveCompilerOptions(configPath);
+  if (!compilerOptions) {
+    configCache.set(configPath, null);
+    return null;
+  }
+  const paths = compilerOptions.paths;
 
   if (!paths || Object.keys(paths).length === 0) {
     configCache.set(configPath, null);
@@ -62,11 +82,9 @@ export function getConfigContext(filePath: string): ConfigContext | null {
   }
 
   // If baseUrl is not set, treat the config directory as the base.
-  const baseUrl = compilerOptions.baseUrl
-    ? path.resolve(configDir, compilerOptions.baseUrl)
-    : configDir;
+  const baseUrl = compilerOptions.baseUrl ?? configDir;
   const matchPath = createMatchPath(baseUrl, paths);
-  const aliasMappings = buildAliasMappings(paths, baseUrl);
+  const aliasMappings = buildAliasMappings(paths);
 
   const context: ConfigContext = {
     configPath,
@@ -114,12 +132,7 @@ function findNearestConfigPath(startDir: string): string | null {
   return null;
 }
 
-function readConfigFile(configPath: string): {
-  compilerOptions?: {
-    baseUrl?: string;
-    paths?: Record<string, string[] | string>;
-  };
-} | null {
+function readConfigFile(configPath: string): RawConfigFile | null {
   // Parse JSONC so tsconfig comments and trailing commas are supported.
   try {
     const raw = fs.readFileSync(configPath, 'utf8');
@@ -135,9 +148,14 @@ function readConfigFile(configPath: string): {
 }
 
 function normalizePaths(
-  paths: Record<string, string[] | string>
+  paths: Record<string, string[] | string> | undefined,
+  baseUrl: string
 ): PathsConfig | null {
   // Normalize paths entries to { pattern: string[] }.
+  if (!paths) {
+    return null;
+  }
+
   const entries = Object.entries(paths);
   if (entries.length === 0) {
     return null;
@@ -145,20 +163,23 @@ function normalizePaths(
 
   const normalized: PathsConfig = {};
   entries.forEach(([key, value]) => {
-    if (Array.isArray(value)) {
-      normalized[key] = value.filter((item) => typeof item === 'string');
-    } else if (typeof value === 'string') {
-      normalized[key] = [value];
+    const items = Array.isArray(value)
+      ? value.filter((item) => typeof item === 'string')
+      : typeof value === 'string'
+        ? [value]
+        : [];
+
+    if (items.length > 0) {
+      // Store absolute targets up front so inherited and local path entries can
+      // be merged without losing the baseUrl each entry was defined against.
+      normalized[key] = items.map((item) => path.resolve(baseUrl, item));
     }
   });
 
   return Object.keys(normalized).length > 0 ? normalized : null;
 }
 
-function buildAliasMappings(
-  paths: PathsConfig,
-  baseUrl: string
-): AliasMapping[] {
+function buildAliasMappings(paths: PathsConfig): AliasMapping[] {
   // Precompute reverse mappings for alias generation from resolved files.
   // Each mapping provides a regex that can extract wildcard segments.
   const mappings: AliasMapping[] = [];
@@ -172,9 +193,7 @@ function buildAliasMappings(
       }
 
       // Convert the target pattern to an absolute, POSIX-normalized pattern.
-      const absoluteTargetPattern = toPosixPath(
-        path.resolve(baseUrl, targetPattern)
-      );
+      const absoluteTargetPattern = toPosixPath(targetPattern);
       const matcher = buildWildcardRegex(absoluteTargetPattern);
       mappings.push({
         aliasPattern,
@@ -188,6 +207,161 @@ function buildAliasMappings(
   });
 
   return mappings;
+}
+
+function resolveCompilerOptions(
+  configPath: string,
+  seen = new Set<string>()
+): ResolvedCompilerOptions | null {
+  const cached = compilerOptionsCache.get(configPath);
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  if (seen.has(configPath)) {
+    return null;
+  }
+
+  const rawConfig = readConfigFile(configPath);
+  if (!rawConfig) {
+    compilerOptionsCache.set(configPath, null);
+    return null;
+  }
+
+  const nextSeen = new Set(seen);
+  nextSeen.add(configPath);
+
+  let baseUrl: string | undefined;
+  let paths: PathsConfig = {};
+
+  // Resolve parents first so the nearest config can override them afterward.
+  const extendedConfigPaths = resolveExtendedConfigPaths(
+    rawConfig.extends,
+    configPath
+  );
+  if (!extendedConfigPaths) {
+    compilerOptionsCache.set(configPath, null);
+    return null;
+  }
+
+  for (const extendedConfigPath of extendedConfigPaths) {
+    const extendedOptions = resolveCompilerOptions(
+      extendedConfigPath,
+      nextSeen
+    );
+    if (!extendedOptions) {
+      compilerOptionsCache.set(configPath, null);
+      return null;
+    }
+
+    if (extendedOptions.baseUrl) {
+      baseUrl = extendedOptions.baseUrl;
+    }
+    if (extendedOptions.paths) {
+      // Later spreads let the closer parent override the more distant parent
+      // when multiple extended configs define the same alias key.
+      paths = {
+        ...paths,
+        ...extendedOptions.paths,
+      };
+    }
+  }
+
+  const configDir = path.dirname(configPath);
+  const compilerOptions = rawConfig.compilerOptions ?? {};
+  const localBaseUrl = resolveLocalBaseUrl(compilerOptions, configDir);
+  if (localBaseUrl) {
+    // The current config has the highest priority for baseUrl.
+    baseUrl = localBaseUrl;
+  }
+
+  const localPaths = normalizePaths(
+    compilerOptions.paths,
+    localBaseUrl ?? configDir
+  );
+  if (localPaths) {
+    // The current config has the highest priority for path aliases too.
+    paths = {
+      ...paths,
+      ...localPaths,
+    };
+  }
+
+  const resolved: ResolvedCompilerOptions = {
+    baseUrl,
+    paths: Object.keys(paths).length > 0 ? paths : null,
+  };
+  compilerOptionsCache.set(configPath, resolved);
+  return resolved;
+}
+
+function resolveLocalBaseUrl(
+  compilerOptions: RawCompilerOptions,
+  configDir: string
+): string | undefined {
+  if (compilerOptions.baseUrl) {
+    return path.resolve(configDir, compilerOptions.baseUrl);
+  }
+
+  if (compilerOptions.paths && Object.keys(compilerOptions.paths).length > 0) {
+    return configDir;
+  }
+
+  return undefined;
+}
+
+function resolveExtendedConfigPaths(
+  extendsValue: string | string[] | undefined,
+  configPath: string
+): string[] | null {
+  if (!extendsValue) {
+    return [];
+  }
+
+  const extendsEntries = Array.isArray(extendsValue)
+    ? extendsValue
+    : [extendsValue];
+  const resolvedPaths: string[] = [];
+
+  extendsEntries.forEach((entry) => {
+    const resolvedPath = resolveExtendedConfigPath(entry, configPath);
+    if (resolvedPath) {
+      resolvedPaths.push(resolvedPath);
+    }
+  });
+
+  // Abort the merge when any link in the extends chain cannot be resolved.
+  if (resolvedPaths.length !== extendsEntries.length) {
+    return null;
+  }
+
+  return resolvedPaths;
+}
+
+function resolveExtendedConfigPath(
+  extendsPath: string,
+  configPath: string
+): string | null {
+  const configDir = path.dirname(configPath);
+  const absolutePath = path.resolve(configDir, extendsPath);
+  const candidates = new Set<string>();
+
+  // Support extensionless targets and directory targets such as "./configs/base".
+  if (path.extname(absolutePath)) {
+    candidates.add(absolutePath);
+  } else {
+    candidates.add(absolutePath);
+    candidates.add(`${absolutePath}.json`);
+  }
+  candidates.add(path.join(absolutePath, 'tsconfig.json'));
+
+  for (const candidate of candidates) {
+    if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+      return candidate;
+    }
+  }
+
+  return null;
 }
 
 function countWildcards(pattern: string): number {

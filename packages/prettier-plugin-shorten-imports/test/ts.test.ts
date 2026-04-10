@@ -107,6 +107,139 @@ describe('prettier-plugin-shorten-imports (ts)', () => {
     expect(output.trim()).toBe('import { formatName } from "@app/format";');
   });
 
+  test('merges extends paths and prefers current overrides', async () => {
+    const root = await makeTempDir();
+    // The parent contributes @base/*, while @shared/* should be replaced by
+    // the current config's mapping.
+    await writeFile(
+      path.join(root, 'configs', 'base.json'),
+      JSON.stringify(
+        {
+          compilerOptions: {
+            baseUrl: '../app',
+            paths: {
+              '@base/*': ['lib/*'],
+              '@shared/*': ['legacy-shared/*'],
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+    await writeFile(
+      path.join(root, 'tsconfig.json'),
+      JSON.stringify(
+        {
+          extends: './configs/base.json',
+          compilerOptions: {
+            baseUrl: '.',
+            paths: {
+              '@app/*': ['src/*'],
+              '@shared/*': ['src/shared/*'],
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    const filePath = path.join(root, 'src', 'features', 'user', 'profile.ts');
+    await writeFile(
+      path.join(root, 'src', 'shared', 'format.ts'),
+      'export const formatName = () => "x";'
+    );
+    await writeFile(
+      path.join(root, 'app', 'lib', 'tool.ts'),
+      'export const tool = true;'
+    );
+
+    const input = `
+import { formatName } from "../../shared/format";
+import { tool } from "../../../app/lib/tool";
+`;
+    const output = await formatWithPlugin(input, filePath);
+
+    // @shared/* comes from the current config, while @base/* is inherited.
+    expect(output).toContain('import { formatName } from "@shared/format";');
+    expect(output).toContain('import { tool } from "@base/tool";');
+  });
+
+  test('merges nested extends chains recursively', async () => {
+    const root = await makeTempDir();
+    // base.json defines the deepest parent, mid.json adds another alias on top,
+    // and tsconfig.json overrides the shared alias again.
+    await writeFile(
+      path.join(root, 'configs', 'base.json'),
+      JSON.stringify(
+        {
+          compilerOptions: {
+            baseUrl: '../src',
+            paths: {
+              '@base/*': ['base/*'],
+              '@shared/*': ['legacy/*'],
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+    await writeFile(
+      path.join(root, 'configs', 'mid.json'),
+      JSON.stringify(
+        {
+          extends: './base.json',
+          compilerOptions: {
+            paths: {
+              '@mid/*': ['nested/*'],
+              '@shared/*': ['shared-mid/*'],
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+    await writeFile(
+      path.join(root, 'tsconfig.json'),
+      JSON.stringify(
+        {
+          extends: './configs/mid.json',
+          compilerOptions: {
+            paths: {
+              '@app/*': ['src/*'],
+              '@shared/*': ['src/shared/*'],
+            },
+          },
+        },
+        null,
+        2
+      )
+    );
+
+    const filePath = path.join(root, 'src', 'features', 'user', 'profile.ts');
+    await writeFile(
+      path.join(root, 'configs', 'nested', 'tool.ts'),
+      'export const nested = true;'
+    );
+    await writeFile(
+      path.join(root, 'src', 'shared', 'format.ts'),
+      'export const formatName = () => "x";'
+    );
+
+    const input = `
+import { nested } from "../../../configs/nested/tool";
+import { formatName } from "../../shared/format";
+`;
+    const output = await formatWithPlugin(input, filePath);
+
+    // The nested alias comes from the middle config in the extends chain.
+    expect(output).toContain('import { nested } from "@mid/tool";');
+    expect(output).toContain('import { formatName } from "@shared/format";');
+  });
+
   test('does not touch bare package imports', async () => {
     const root = await makeTempDir();
     // Alias config is present, but bare package specifiers are ignored.

@@ -8,8 +8,10 @@ Build a Prettier npm plugin that shortens local import paths.
    Use the same tsconfig lookup behavior as
    https://github.com/simonhaenisch/prettier-plugin-organize-imports.
    Use compilerOptions.paths and baseUrl from the nearest config file.
-   Resolve extends paths relative to the current tsconfig file, but do not
-   use baseUrl or paths from extended configs. Ignore project references.
+   Resolve extends paths relative to the current tsconfig file. Merge
+   baseUrl and paths through nested extends chains. The current config file
+   has higher priority than extended configs, and current paths entries
+   override inherited entries with the same key. Ignore project references.
    If no config or paths are found, do not modify specifiers. If paths
    exist and baseUrl is missing, treat baseUrl as the directory of the
    config file.
@@ -17,20 +19,20 @@ Build a Prettier npm plugin that shortens local import paths.
    specifiers:
    - The normalized relative path from the current file to the target.
    - Any alias path that resolves to the same target via paths mappings.
-   Resolve the target file by applying TS/Node extension and index rules
-   with extensions ordered as:
-   .ts, .tsx, .d.ts, .js, .jsx, .mjs, .cjs, .json, .vue.
-   If the target file does not exist, do not change the specifier. When
-   paths contains wildcards with multiple candidates, include every
-   resolved alias in the comparison. Skip specifiers that resolve to
-   node_modules or outside the project root (the directory containing the
-   nearest config file).
+     Resolve the target file by applying TS/Node extension and index rules
+     with extensions ordered as:
+     .ts, .tsx, .d.ts, .js, .jsx, .mjs, .cjs, .json, .vue.
+     If the target file does not exist, do not change the specifier. When
+     paths contains wildcards with multiple candidates, include every
+     resolved alias in the comparison. Skip specifiers that resolve to
+     node_modules or outside the project root (the directory containing the
+     nearest config file).
 5. Choose the shortest path by depth, then by string length:
    - Depth is the count of path segments split by "/" after normalization,
      and ".." counts as one segment.
    - If depth is equal, choose the shorter string length.
    - If string length is also equal, keep the original specifier.
-   If the current specifier already wins under these rules, do not change it.
+     If the current specifier already wins under these rules, do not change it.
 6. Preserve an existing file extension if present and do not add new
    extensions. Normalize to POSIX "/" separators.
 7. For .vue files, only update import/export specifiers inside <script> and
@@ -75,19 +77,20 @@ Input config:
 Input file: src/features/user/profile.ts
 
 ```ts
-import { formatName } from "../../utils/format";
+import { formatName } from '../../utils/format';
 ```
 
 Resolved target: src/utils/format.ts
 
 Candidate specifiers:
+
 - ../../utils/format (depth 3)
 - @app/utils/format (depth 2)
 
 Output:
 
 ```ts
-import { formatName } from "@app/utils/format";
+import { formatName } from '@app/utils/format';
 ```
 
 Example 2: tie keeps existing specifier
@@ -108,19 +111,20 @@ Input config:
 Input file: src/features/user/profile.ts
 
 ```ts
-import { formatName } from "@app/utils/format";
+import { formatName } from '@app/utils/format';
 ```
 
 Resolved target: src/utils/format.ts
 
 Candidate specifiers:
+
 - ../../utils/format (depth 3)
 - @app/utils/format (depth 3)
 
 Output:
 
 ```ts
-import { formatName } from "@app/utils/format";
+import { formatName } from '@app/utils/format';
 ```
 
 Example 3: bare package specifier is unchanged
@@ -128,13 +132,13 @@ Example 3: bare package specifier is unchanged
 Input file: src/features/user/profile.ts
 
 ```ts
-import { useState } from "react";
+import { useState } from 'react';
 ```
 
 Output:
 
 ```ts
-import { useState } from "react";
+import { useState } from 'react';
 ```
 
 Example 4: baseUrl affects paths resolution
@@ -155,17 +159,18 @@ Input config:
 Input file: src/features/user/profile.ts
 
 ```ts
-import { formatName } from "../../shared/format";
+import { formatName } from '../../shared/format';
 ```
 
 Resolved target: src/shared/format.ts
 
 Candidate specifiers:
+
 - ../../shared/format (depth 3)
 - @app/format (depth 2)
 
 Output:
 
 ```ts
-import { formatName } from "@app/format";
+import { formatName } from '@app/format';
 ```
