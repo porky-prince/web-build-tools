@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Images2atlas webpack plugin'
+  short_description: 'Configure the atlas webpack wrapper.'
+  default_prompt: 'Use $images2atlas-webpack-plugin to update a webpack config that already depends on images2atlas-webpack-plugin.'
+
+policy:
+  allow_implicit_invocation: true

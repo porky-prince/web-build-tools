@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Images2style'
+  short_description: 'Configure images2style safely.'
+  default_prompt: 'Use $images2style to update a project that already depends on images2style.'
+
+policy:
+  allow_implicit_invocation: true

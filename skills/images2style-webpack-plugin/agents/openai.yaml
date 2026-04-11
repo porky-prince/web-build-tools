@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Images2style webpack plugin'
+  short_description: 'Configure the style webpack wrapper.'
+  default_prompt: 'Use $images2style-webpack-plugin to update a webpack config that already depends on images2style-webpack-plugin.'
+
+policy:
+  allow_implicit_invocation: true
