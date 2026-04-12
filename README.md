@@ -21,6 +21,26 @@ package links to its README for details:
 - [`web-build-utils`](packages/web-build-utils/README.md): Shared utilities
   used by the other packages.
 
+## Agent skills
+
+This repo also ships Agent Skills in [`skills/`](skills) for AI tools that
+support the Agent Skills format and the `skills` CLI.
+
+Examples:
+
+```bash
+npx skills add porky-prince/web-build-tools --list
+npx skills add porky-prince/web-build-tools@images2atlas
+npx skills add porky-prince/web-build-tools@images2style
+```
+
+Available skills:
+
+- `images2atlas`
+- `images2atlas-webpack-plugin`
+- `images2style`
+- `images2style-webpack-plugin`
+
 ## Scripts
 
 Run these scripts from the repo root with pnpm:

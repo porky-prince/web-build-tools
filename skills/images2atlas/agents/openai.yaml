@@ -1,0 +1,7 @@
+interface:
+  display_name: 'Images2atlas'
+  short_description: 'Configure images2atlas safely.'
+  default_prompt: 'Use $images2atlas to update a project that already depends on images2atlas.'
+
+policy:
+  allow_implicit_invocation: true
