@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-shorten-imports",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Prettier plugin that shortens local import paths",
   "author": "Porky Ke",
   "homepage": "https://github.com/porky-prince/web-build-tools/packages/prettier-plugin-shorten-imports#readme",
