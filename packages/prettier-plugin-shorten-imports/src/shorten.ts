@@ -28,10 +28,7 @@ interface Replacement {
 // since it usually formats files in a single run.
 const resolveCache = new Map<string, string | null>();
 
-export function shortenImports(
-  input: string,
-  filePath: string | undefined
-): string {
+export function shorten(input: string, filePath: string | undefined): string {
   // Skip if Prettier does not provide a filepath (cannot resolve config).
   if (!filePath) {
     return input;
