@@ -1,7 +1,7 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs-extra';
-import { shortenImports } from '../src/shorten-imports';
+import { shorten } from '../src/shorten';
 
 // Track temp dirs so we can always clean up after each test.
 const tempDirs: string[] = [];
@@ -25,7 +25,7 @@ export async function formatWithPlugin(code: string, filePath: string) {
   // Create an empty file on disk so any file-based checks succeed.
   await fs.ensureFile(filePath);
   // Apply the plugin's preprocessing logic without invoking Prettier.
-  return shortenImports(code, filePath);
+  return shorten(code, filePath);
 }
 
 export async function cleanupTempDirs() {
