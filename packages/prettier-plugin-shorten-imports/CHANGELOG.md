@@ -1,5 +1,11 @@
 # prettier-plugin-shorten-imports
 
+## 0.0.3
+
+### Patch Changes
+
+- [#28](https://github.com/porky-prince/web-build-tools/pull/28) [`b9291ff`](https://github.com/porky-prince/web-build-tools/commit/b9291ffdf9f86373bbd2559cc56e5cae0ad657ec) Thanks [@porky-prince](https://github.com/porky-prince)! - refactor(prettier-plugin-shorten-imports): update parser imports to use require syntax
+
 ## 0.0.2
 
 ### Patch Changes
