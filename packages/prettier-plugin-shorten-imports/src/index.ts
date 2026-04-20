@@ -1,7 +1,7 @@
 import type { Parser, Plugin, ParserOptions } from 'prettier';
-import { parsers as babelParsers } from 'prettier/plugins/babel';
-import { parsers as htmlParsers } from 'prettier/plugins/html';
-import { parsers as tsParsers } from 'prettier/plugins/typescript';
+const { parsers: babelParsers } = require('prettier/parser-babel');
+const { parsers: htmlParsers } = require('prettier/parser-html');
+const { parsers: tsParsers } = require('prettier/parser-typescript');
 import { shorten } from './shorten';
 
 // Shorten the code's imports using the `shortenImports`.
