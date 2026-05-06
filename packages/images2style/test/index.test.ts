@@ -1,8 +1,8 @@
+import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import fs from 'fs-extra';
-import { images2style } from '../src';
 import { isSafeFilename } from 'web-build-utils';
+import { images2style } from '../src';
 
 // Partially mock utils to control isSafeFilename while keeping real toPercent.
 jest.mock('web-build-utils', () => {

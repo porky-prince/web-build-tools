@@ -1,5 +1,5 @@
-import type webpack from 'webpack';
 import { images2style, Images2styleOptions } from 'images2style';
+import type webpack from 'webpack';
 
 type Plugin = webpack.WebpackPluginInstance;
 type Compiler = webpack.Compiler;

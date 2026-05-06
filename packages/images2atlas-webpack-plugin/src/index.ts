@@ -1,5 +1,5 @@
-import type webpack from 'webpack';
 import { images2atlas, Images2atlasOptions } from 'images2atlas';
+import type webpack from 'webpack';
 
 type Plugin = webpack.WebpackPluginInstance;
 type Compiler = webpack.Compiler;

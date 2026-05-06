@@ -1,7 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
-import ts from 'typescript';
 import resolve from 'resolve';
+import ts from 'typescript';
+import {
+  buildAliasSpecifier,
+  getConfigContext,
+  getModulePathForMatch,
+} from './tsconfig';
 import {
   RESOLVE_EXTENSIONS,
   countPathDepth,
@@ -11,11 +16,6 @@ import {
   stripKnownExtension,
   toPosixPath,
 } from './utils';
-import {
-  buildAliasSpecifier,
-  getConfigContext,
-  getModulePathForMatch,
-} from './tsconfig';
 
 interface Replacement {
   start: number;

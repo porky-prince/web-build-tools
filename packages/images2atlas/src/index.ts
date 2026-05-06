@@ -1,9 +1,9 @@
 import { FSWatcher, watch } from 'chokidar';
-import path from 'path';
+import debounce from 'debounce';
 import fs from 'fs-extra';
+import path from 'path';
 import templater from 'spritesheet-templates';
 import Spritesmith from 'spritesmith';
-import debounce from 'debounce';
 import { isSafeFilename } from 'web-build-utils';
 
 /**
