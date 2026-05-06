@@ -75,5 +75,5 @@ splits into two paths based on the commit message.
 
 [node-badge]: https://img.shields.io/badge/Node.js-%3E%3D22-339933?logo=node.js&logoColor=white
 [node-url]: https://nodejs.org
-[pnpm-badge]: https://img.shields.io/badge/pnpm-9-F69220?logo=pnpm&logoColor=white
+[pnpm-badge]: https://img.shields.io/badge/pnpm-%3E%3D10-f69220?logo=pnpm&logoColor=white
 [pnpm-url]: https://pnpm.io

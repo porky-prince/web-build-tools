@@ -9,7 +9,7 @@
   "bugs": "https://github.com/porky-prince/web-build-tools/issues",
   "engines": {
     "node": ">=22",
-    "pnpm": ">=9"
+    "pnpm": ">=10"
   },
   "scripts": {
     "prepare": "husky",
