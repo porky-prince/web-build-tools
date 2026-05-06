@@ -21,11 +21,6 @@
     "test": "pnpm --filter \"*\" test",
     "build": "pnpm --filter \"*\" build",
     "pub:changeset": "changeset",
-    "pub:alpha": "changeset pre enter alpha",
-    "pub:beta": "changeset pre enter beta",
-    "pub:rc": "changeset pre enter rc",
-    "pub:exit-pre": "changeset pre exit",
-    "pub:version": "changeset version",
     "pub:release": "changeset publish"
   },
   "dependencies": {
