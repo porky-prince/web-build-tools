@@ -49,11 +49,6 @@ Run these scripts from the repo root with pnpm:
 - `pnpm test`: Run Jest across all workspace packages.
 - `pnpm build`: Build all packages with TypeScript declarations.
 - `pnpm pub:changeset`: Create a Changeset for versioning.
-- `pnpm pub:alpha`: Enter the Changesets prerelease mode for alpha versions.
-- `pnpm pub:beta`: Enter the Changesets prerelease mode for beta versions.
-- `pnpm pub:rc`: Enter the Changesets prerelease mode for release candidates.
-- `pnpm pub:exit-pre`: Exit the Changesets prerelease mode.
-- `pnpm pub:version`: Apply version updates from Changesets.
 - `pnpm pub:release`: Publish versions to the npm registry.
 
 ## Release workflow
@@ -75,5 +70,5 @@ splits into two paths based on the commit message.
 
 [node-badge]: https://img.shields.io/badge/Node.js-%3E%3D22-339933?logo=node.js&logoColor=white
 [node-url]: https://nodejs.org
-[pnpm-badge]: https://img.shields.io/badge/pnpm-9-F69220?logo=pnpm&logoColor=white
+[pnpm-badge]: https://img.shields.io/badge/pnpm-%3E%3D10-f69220?logo=pnpm&logoColor=white
 [pnpm-url]: https://pnpm.io

@@ -1,7 +1,7 @@
 import { FSWatcher, watch } from 'chokidar';
-import path from 'path';
-import fs from 'fs-extra';
 import debounce from 'debounce';
+import fs from 'fs-extra';
+import path from 'path';
 import { isSafeFilename, toPercent } from 'web-build-utils';
 
 /**

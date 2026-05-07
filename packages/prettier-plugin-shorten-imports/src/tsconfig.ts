@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
-import path from 'path';
 import { parse, ParseError } from 'jsonc-parser';
+import path from 'path';
 import { createMatchPath } from 'tsconfig-paths';
 import {
   escapeRegex,

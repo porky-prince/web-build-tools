@@ -1,6 +1,6 @@
-import path from 'path';
-import os from 'os';
 import fs from 'fs-extra';
+import os from 'os';
+import path from 'path';
 import { shorten } from '../src/shorten';
 
 // Track temp dirs so we can always clean up after each test.

@@ -1,6 +1,6 @@
-import path from 'path';
-import os from 'os';
 import fs from 'fs-extra';
+import os from 'os';
+import path from 'path';
 import templater from 'spritesheet-templates';
 import Spritesmith from 'spritesmith';
 import { isSafeFilename } from 'web-build-utils';
