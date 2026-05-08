@@ -191,9 +191,6 @@ importers:
       '@types/node':
         specifier: ^24.6.2
         version: 24.6.2
-      webpack:
-        specifier: ^5.102.0
-        version: 5.102.0
 
 packages:
 
