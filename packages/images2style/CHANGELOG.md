@@ -1,5 +1,12 @@
 # images2style
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`11e7cd5`](https://github.com/porky-prince/web-build-tools/commit/11e7cd534e798db1317f33b6e92c20445b79fe94)]:
+  - web-build-utils@0.0.5
+
 ## 1.0.0
 
 ### Major Changes
