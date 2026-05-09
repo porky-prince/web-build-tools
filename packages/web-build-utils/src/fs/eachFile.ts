@@ -1,38 +1,49 @@
-import fs from 'fs-extra';
-import path from 'path';
+import { pathExists, readdir, stat } from 'fs-extra';
+import { join } from 'node:path';
 
-export type EachFileFn = (filepath: string) => void | Promise<void>;
+export type EachFileFn = (path: string) => void | Promise<void>;
 
-export type EachFileFilter = (filepath: string) => boolean | Promise<boolean>;
+export type EachFileFilter = (path: string) => boolean | Promise<boolean>;
 
 export interface EachFileOptions {
   filter?: EachFileFilter;
 }
 
+/**
+ * Traverses a file or directory tree and invokes a callback for each file.
+ *
+ * @remarks
+ * The optional filter is evaluated for every visited path, including
+ * directories, before recursion continues.
+ *
+ * @param path - File or directory to start from
+ * @param fn - Callback invoked for each matched file
+ * @param options - Traversal options
+ */
 export async function eachFile(
-  filepath: string,
+  path: string,
   fn: EachFileFn,
   options: EachFileOptions = {}
 ) {
-  if (!filepath || !(await fs.pathExists(filepath))) {
+  if (!path || !(await pathExists(path))) {
     return;
   }
 
   const { filter } = options;
-  if (filter && !(await filter(filepath))) {
+  if (filter && !(await filter(path))) {
     return;
   }
 
-  if ((await fs.stat(filepath)).isDirectory()) {
-    const baseNames = await fs.readdir(filepath);
+  if ((await stat(path)).isDirectory()) {
+    const baseNames = await readdir(path);
     await Promise.all(
       baseNames.map((baseName) => {
-        const subFilepath = path.join(filepath, baseName);
-        return eachFile(subFilepath, fn, options);
+        const subPath = join(path, baseName);
+        return eachFile(subPath, fn, options);
       })
     );
     return;
   }
 
-  return fn(filepath);
+  return fn(path);
 }

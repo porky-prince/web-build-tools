@@ -18,6 +18,8 @@ package links to its README for details:
   CSS background styles for images.
 - [`images2style-webpack-plugin`](packages/images2style-webpack-plugin/README.md):
   Webpack plugin wrapper for `images2style`.
+- [`prettier-plugin-shorten-imports`](packages/prettier-plugin-shorten-imports/README.md):
+  Prettier plugin that shortens local import paths.
 - [`web-build-utils`](packages/web-build-utils/README.md): Shared utilities
   used by the other packages.
 

@@ -1,22 +1,32 @@
-import fs from 'fs-extra';
-import path from 'path';
+import { pathExists, pathExistsSync, stat, statSync } from 'fs-extra';
+import { extname } from 'node:path';
 
-export async function isDir(filepath: string) {
-  return (
-    !!filepath &&
-    (await fs.pathExists(filepath)) &&
-    (await fs.stat(filepath)).isDirectory()
-  );
+/**
+ * Returns whether a path exists and resolves to a directory.
+ *
+ * @param path - Path to test
+ */
+export async function isDir(path: string) {
+  return !!path && (await pathExists(path)) && (await stat(path)).isDirectory();
 }
 
-export function isDirSync(filepath: string) {
-  return (
-    !!filepath &&
-    fs.pathExistsSync(filepath) &&
-    fs.statSync(filepath).isDirectory()
-  );
+/**
+ * Synchronous version of {@link isDir}.
+ *
+ * @param path - Path to test
+ */
+export function isDirSync(path: string) {
+  return !!path && pathExistsSync(path) && statSync(path).isDirectory();
 }
 
-export function isDirPath(filepath: string) {
-  return !!filepath && !path.extname(filepath);
+/**
+ * Heuristically treats a path without an extension as directory-like.
+ *
+ * @remarks
+ * This does not check the filesystem.
+ *
+ * @param path - Path string to inspect
+ */
+export function isDirPath(path: string) {
+  return !!path && !extname(path);
 }

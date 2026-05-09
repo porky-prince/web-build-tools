@@ -6,6 +6,7 @@ This is a pnpm workspace monorepo. Packages live under `packages/`:
 - `packages/images2atlas-webpack-plugin`: spritesheet generator plugin.
 - `packages/images2style`: CSS background generator core module.
 - `packages/images2style-webpack-plugin`: CSS background generator plugin.
+- `packages/prettier-plugin-shorten-imports`: Prettier plugin that shortens local import paths.
 - `packages/web-build-utils`: shared utilities used by the plugins.
 Each package follows `src/` for TypeScript sources, `test/` for Jest tests, and
 `dist/` as build output. Shared tooling lives at the repo root
@@ -28,6 +29,16 @@ Use 2-space indentation and LF endings (`.editorconfig`). Prettier enforces
 ESLint uses the recommended JS + TypeScript rules plus Prettier integration.
 Prefer TypeScript for source files (`src/*.ts`) and keep entry points named
 `index.ts`.
+
+When importing modules, use destructuring assignment whenever possible.
+If the module is a Node.js builtin, add the prefix `node:`.
+```js
+import path from 'node:path'; // Wrong
+import * as path from 'node:path'; // Wrong
+import { join } from 'path'; // Wrong
+import { join } from 'node:path'; // Correct
+import { readFile } from 'fs-extra'; // Correct
+```
 
 ## Testing guidelines
 Tests use Jest with `ts-jest`. Place tests under `packages/*/test` and name

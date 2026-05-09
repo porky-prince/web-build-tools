@@ -1,10 +1,10 @@
-import fs from 'fs-extra';
-import path from 'path';
+import { outputFile, pathExists, readFile } from 'fs-extra';
+import { join, relative } from 'node:path';
 import { eachFile, EachFileOptions } from './eachFile';
 
 type Content = string | Buffer;
 
-type CopyFilesTransform = (
+export type CopyFilesTransform = (
   src: string,
   dest: string,
   content: Buffer
@@ -15,6 +15,18 @@ export interface CopyFilesOptions extends EachFileOptions {
   transform?: CopyFilesTransform;
 }
 
+/**
+ * Copies files from a source path into a destination path.
+ *
+ * @remarks
+ * Relative paths under `src` are preserved under `dest`. When provided, the
+ * transform runs after the source file is read and before the destination file
+ * is written.
+ *
+ * @param src - Source file or directory to copy from
+ * @param dest - Destination root to copy into
+ * @param options - Copy behavior and traversal options
+ */
 export async function copyFiles(
   src: string,
   dest: string,
@@ -25,18 +37,18 @@ export async function copyFiles(
   return eachFile(
     src,
     async (filepath) => {
-      const relative = path.relative(src, filepath);
-      const destPath = path.join(dest, relative);
-      if (!overwrite && (await fs.pathExists(destPath))) {
+      const relativePath = relative(src, filepath);
+      const destPath = join(dest, relativePath);
+      if (!overwrite && (await pathExists(destPath))) {
         return;
       }
 
-      let content: Content = await fs.readFile(filepath);
+      let content: Content = await readFile(filepath);
       if (transform) {
         content = await transform(filepath, destPath, content as Buffer);
       }
 
-      return fs.outputFile(destPath, content);
+      return outputFile(destPath, content);
     },
     options
   );

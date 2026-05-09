@@ -1,30 +1,30 @@
-import path from 'path';
+import { basename } from 'node:path';
 
 /**
- * Checks if the given file path is a safe filename.
+ * Returns whether the basename of a path is safe to use as a filename.
  *
- * A safe filename:
- * - Is not empty or undefined
- * - Does not start with a dot (e.g. `.DS_Store`)
- * - Contains only alphanumeric characters, underscores, dots, hyphens, at signs, or dollar signs
+ * @remarks
+ * This check rejects dotfiles such as `.DS_Store` and only allows
+ * alphanumeric characters, underscores, dots, hyphens, at signs, and dollar
+ * signs in the basename.
  *
- * @param {string} p - The file path to check.
- * @param {boolean} [log] - Whether to log a warning if the filename is unsafe.
- * @returns {boolean} Returns `true` if the filename is safe, otherwise `false`.
+ * @param path - Path whose basename should be validated
+ * @param log - Whether to log a warning for unsafe names
  *
  * @example
+ * ```ts
  * isSafeFilename('foo.txt'); // true
  * isSafeFilename('.env'); // false
  * isSafeFilename('my-file@2024.js'); // true
  * isSafeFilename('bad/file\\name'); // false
  * isSafeFilename(''); // false
+ * ```
  */
-export function isSafeFilename(p: string, log?: boolean) {
-  if (!p) {
+export function isSafeFilename(path: string, log?: boolean) {
+  if (!path) {
     return false;
   }
-  const name = path.basename(p);
-  // Exclude like .DS_Store etc.
+  const name = basename(path);
   if (name.startsWith('.')) {
     return false;
   }
@@ -32,7 +32,7 @@ export function isSafeFilename(p: string, log?: boolean) {
     return true;
   }
   if (log) {
-    console.warn('Found a unsafe file:', p);
+    console.warn('Found a unsafe file:', path);
   }
   return false;
 }

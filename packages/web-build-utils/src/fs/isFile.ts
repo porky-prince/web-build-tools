@@ -1,20 +1,32 @@
-import fs from 'fs-extra';
-import path from 'path';
+import { pathExists, pathExistsSync, stat, statSync } from 'fs-extra';
+import { extname } from 'node:path';
 
-export async function isFile(filepath: string) {
-  return (
-    !!filepath &&
-    (await fs.pathExists(filepath)) &&
-    (await fs.stat(filepath)).isFile()
-  );
+/**
+ * Returns whether a path exists and resolves to a file.
+ *
+ * @param path - Path to test
+ */
+export async function isFile(path: string) {
+  return !!path && (await pathExists(path)) && (await stat(path)).isFile();
 }
 
-export function isFileSync(filepath: string) {
-  return (
-    !!filepath && fs.pathExistsSync(filepath) && fs.statSync(filepath).isFile()
-  );
+/**
+ * Synchronous version of {@link isFile}.
+ *
+ * @param path - Path to test
+ */
+export function isFileSync(path: string) {
+  return !!path && pathExistsSync(path) && statSync(path).isFile();
 }
 
-export function isFilePath(filepath: string) {
-  return !!filepath && !!path.extname(filepath);
+/**
+ * Heuristically treats a path with an extension as file-like.
+ *
+ * @remarks
+ * This does not check the filesystem.
+ *
+ * @param path - Path string to inspect
+ */
+export function isFilePath(path: string) {
+  return !!path && !!extname(path);
 }
