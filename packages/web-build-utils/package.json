@@ -30,8 +30,7 @@
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
-    "@types/node": "^24.6.2",
-    "webpack": "^5.102.0"
+    "@types/node": "^24.6.2"
   },
   "keywords": [
     "build",
