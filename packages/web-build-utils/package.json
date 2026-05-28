@@ -28,10 +28,7 @@
   "dependencies": {
     "fs-extra": "^11.3.2"
   },
-  "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
-    "@types/node": "^24.6.2"
-  },
+  "devDependencies": {},
   "keywords": [
     "build",
     "utils"
