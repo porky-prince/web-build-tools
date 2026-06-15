@@ -1,8 +1,9 @@
 import { FSWatcher, watch } from 'chokidar';
 import debounce from 'debounce';
+import { toFixed } from 'es-stl';
 import fs from 'fs-extra';
 import path from 'path';
-import { isSafeFilename, toPercent } from 'web-build-utils';
+import { isSafeFilename } from 'web-build-utils';
 
 /**
  * Options for Images2style
@@ -47,13 +48,16 @@ const imageStyleTemplate = `
 
 const atlasStyleTemplate = `
 .{className} {
-  background: url('{imagePath}') {x}% {y}% / {w}% {h}% no-repeat;
+  background: url('{imagePath}') {x} {y} / {w} {h} no-repeat;
 }
 `;
 
 // Format percent values consistently for CSS output.
 function toPercentStr(num: number): string {
-  return toPercent(num, 4) + '';
+  if (num === 0) {
+    return num + '';
+  }
+  return toFixed(num * 100, 4) + '%';
 }
 
 /**

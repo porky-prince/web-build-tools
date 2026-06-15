@@ -28,6 +28,7 @@
   "dependencies": {
     "chokidar": "^4.0.3",
     "debounce": "^2.2.0",
+    "es-stl": "^3.0.2",
     "fs-extra": "^11.3.2",
     "web-build-utils": "workspace:^"
   },

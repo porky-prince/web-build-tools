@@ -21,13 +21,10 @@ yarn add web-build-utils
 Import the helpers you need and call them in your build tooling code.
 
 ```ts
-import { isSafeFilename, toPercent } from 'web-build-utils';
+import { isSafeFilename } from 'web-build-utils';
 
 const fileName = 'sprite@2x.png';
 const isSafe = isSafeFilename(fileName, true);
-
-const ratio = 0.1234;
-const percent = toPercent(ratio, 2);
 ```
 
 ## Notes
