@@ -1,6 +1,6 @@
 {
   "name": "images2atlas",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Plugin that converts set of images into a spritesheet by its directory and SASS/LESS/Stylus mixins",
   "author": "Porky Ke",
   "homepage": "https://github.com/porky-prince/web-build-tools/packages/images2atlas#readme",
