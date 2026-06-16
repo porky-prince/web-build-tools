@@ -4,7 +4,7 @@ import path from 'path';
 import { isSafeFilename } from 'web-build-utils';
 import { images2style } from '../src';
 
-// Partially mock utils to control isSafeFilename while keeping real toPercent.
+// Partially mock utils to control isSafeFilename.
 jest.mock('web-build-utils', () => {
   const actual = jest.requireActual('web-build-utils');
   return {
@@ -230,18 +230,18 @@ describe('images2style', () => {
     const output = await fs.readFile(destFile, 'utf8');
 
     expect(output).toContain('.assets-sprites-sheet-frame1');
-    expect(output).toContain('0% 0% / 100% 100%');
+    expect(output).toContain('0 0 / 100% 100%');
 
     expect(output).toContain('.assets-sprites-sheets-avatar-bg-0');
-    expect(output).toContain('0% 0% / 301.8349% 112.1429%');
+    expect(output).toContain('0 0 / 301.8349% 112.1429%');
     expect(output).toContain('.assets-sprites-sheets-avatar-bg-1');
-    expect(output).toContain('50% 0% / 301.8349% 126.6129%');
+    expect(output).toContain('50% 0 / 301.8349% 126.6129%');
     expect(output).toContain('.assets-sprites-sheets-avatar-bg-2');
-    expect(output).toContain('100% 0% / 301.8349% 126.6129%');
+    expect(output).toContain('100% 0 / 301.8349% 126.6129%');
     expect(output).toContain('.assets-sprites-sheets-fire');
     expect(output).toContain('69.8413% 87.4126% / 2350% 1121.4286%');
     expect(output).toContain('.assets-sprites-sheets-notice');
-    expect(output).toContain('0% 100% / 2056.25% 981.25%');
+    expect(output).toContain('0 100% / 2056.25% 981.25%');
 
     expect(output).not.toContain('NaN');
     expect(output).not.toContain('Infinity');

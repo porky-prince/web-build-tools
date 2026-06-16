@@ -75,7 +75,7 @@ assets/
 
 5. **Atlas JSON handling**
    - Valid atlas JSON generates one rule per frame with atlas-style properties.
-   - Percent values match `toPercent` math (use simple sizes for deterministic
+   - Percent values match `toPercentStr` math (use simple sizes for deterministic
      values like 0 and 200).
    - Invalid atlas JSON falls back to a single image-style rule.
 

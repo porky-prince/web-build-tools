@@ -35,10 +35,7 @@
     "spritesmith": "^3.5.1",
     "web-build-utils": "workspace:^"
   },
-  "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
-    "@types/node": "^24.6.2"
-  },
+  "devDependencies": {},
   "keywords": [
     "icons",
     "images",

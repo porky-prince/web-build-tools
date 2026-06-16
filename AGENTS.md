@@ -33,11 +33,11 @@ Prefer TypeScript for source files (`src/*.ts`) and keep entry points named
 When importing modules, use destructuring assignment whenever possible.
 If the module is a Node.js builtin, add the prefix `node:`.
 ```js
-import path from 'node:path'; // Wrong
-import * as path from 'node:path'; // Wrong
-import { join } from 'path'; // Wrong
-import { join } from 'node:path'; // Correct
-import { readFile } from 'fs-extra'; // Correct
+import path from 'node:path'; // Bad
+import * as path from 'node:path'; // Bad
+import { join } from 'path'; // Bad
+import { join } from 'node:path'; // Good
+import { readFile } from 'fs-extra'; // Good
 ```
 
 ## Testing guidelines
