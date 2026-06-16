@@ -1,5 +1,14 @@
 # images2atlas-webpack-plugin
 
+## 1.0.1
+
+### Patch Changes
+
+- [#33](https://github.com/porky-prince/web-build-tools/pull/33) [`e593c13`](https://github.com/porky-prince/web-build-tools/commit/e593c134b8ca04d8092e72bb2966f800dcabb56f) Thanks [@porky-prince](https://github.com/porky-prince)! - chore(build): update TypeScript configuration and add package creation script
+  feat(web-build-utils): remove function `toPercent`
+- Updated dependencies [[`e593c13`](https://github.com/porky-prince/web-build-tools/commit/e593c134b8ca04d8092e72bb2966f800dcabb56f)]:
+  - images2atlas@1.0.2
+
 ## 1.0.0
 
 ### Major Changes
