@@ -1,0 +1,6 @@
+interface:
+  display_name: 'Node.js Project'
+  short_description: 'Node.js project coding standards'
+  default_prompt: 'Use $nodejs-project to update this Node.js project while
+    respecting its coding standards, package metadata, workspace layout,
+    tooling, dependencies, and runtime conventions.'
