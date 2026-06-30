@@ -2,6 +2,7 @@
 
 ## Project structure and module organization
 This is a pnpm workspace monorepo. Packages live under `packages/`:
+- `packages/eslint-config-porky`: provides shared ESLint flat config additions.
 - `packages/images2atlas`: spritesheet generator core module.
 - `packages/images2atlas-webpack-plugin`: spritesheet generator plugin.
 - `packages/images2style`: CSS background generator core module.
@@ -29,16 +30,6 @@ Use 2-space indentation and LF endings (`.editorconfig`). Prettier enforces
 ESLint uses the recommended JS + TypeScript rules plus Prettier integration.
 Prefer TypeScript for source files (`src/*.ts`) and keep entry points named
 `index.ts`.
-
-When importing modules, use destructuring assignment whenever possible.
-If the module is a Node.js builtin, add the prefix `node:`.
-```js
-import path from 'node:path'; // Bad
-import * as path from 'node:path'; // Bad
-import { join } from 'path'; // Bad
-import { join } from 'node:path'; // Good
-import { readFile } from 'fs-extra'; // Good
-```
 
 ## Testing guidelines
 Tests use Jest with `ts-jest`. Place tests under `packages/*/test` and name
