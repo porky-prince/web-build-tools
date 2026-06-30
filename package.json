@@ -20,6 +20,7 @@
     "lint": "npm-run-all -l -p \"lint:**\"",
     "pretest": "npm run lint",
     "test": "pnpm --filter \"*\" test",
+    "test:only": "pnpm --filter \"*\" test",
     "build": "pnpm --filter \"*\" build",
     "pub:changeset": "changeset",
     "pub:release": "changeset publish"

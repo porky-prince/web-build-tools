@@ -1,0 +1,40 @@
+{
+  "name": "eslint-config-porky",
+  "version": "0.0.0",
+  "description": "Append of the eslint config",
+  "author": "Porky Ke",
+  "homepage": "https://github.com/porky-prince/web-build-tools/packages/eslint-config-porky#readme",
+  "bugs": "https://github.com/porky-prince/web-build-tools/issues",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:porky-prince/web-build-tools.git",
+    "directory": "packages/eslint-config-porky"
+  },
+  "scripts": {
+    "start": "tsc -w",
+    "tsc": "tsc --declaration",
+    "build": "del dist && npm run tsc",
+    "test": "jest"
+  },
+  "dependencies": {
+    "parse-gitignore": "^2.0.0"
+  },
+  "devDependencies": {},
+  "peerDependencies": {
+    "eslint": ">=9"
+  },
+  "keywords": [
+    "eslint",
+    "config",
+    "porky"
+  ]
+}
