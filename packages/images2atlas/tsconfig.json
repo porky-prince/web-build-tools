@@ -8,5 +8,5 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src", "./spritesheet-templates.d.ts"]
+  "include": ["src"]
 }
