@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import templater from 'spritesheet-templates';
 import Spritesmith from 'spritesmith';
 import { isSafeFilename } from 'web-build-utils';
 import { images2atlas } from '../src';
+import templater from '../src/spritesheet-templates';
 
 jest.mock('spritesheet-templates', () => ({
   __esModule: true,

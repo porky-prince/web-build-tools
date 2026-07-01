@@ -10,6 +10,8 @@ web-build-tools is a pnpm workspace monorepo for web build tools.
 This repo publishes several packages that work together or independently. Each
 package links to its README for details:
 
+- [`eslint-config-porky`](packages/eslint-config-porky/README.md): provides
+  shared ESLint flat config additions.
 - [`images2atlas`](packages/images2atlas/README.md): Core module that generates
   spritesheets from image directories and outputs SASS/LESS/Stylus mixins.
 - [`images2atlas-webpack-plugin`](packages/images2atlas-webpack-plugin/README.md):
@@ -42,6 +44,7 @@ Available skills:
 - `images2atlas-webpack-plugin`
 - `images2style`
 - `images2style-webpack-plugin`
+- `nodejs-project`
 
 ## Scripts
 

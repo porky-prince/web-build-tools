@@ -2,9 +2,9 @@ import { FSWatcher, watch } from 'chokidar';
 import debounce from 'debounce';
 import fs from 'fs-extra';
 import path from 'path';
-import templater from 'spritesheet-templates';
 import Spritesmith from 'spritesmith';
 import { isSafeFilename } from 'web-build-utils';
+import templater from './spritesheet-templates';
 
 /**
  * Options for Images2atlas
